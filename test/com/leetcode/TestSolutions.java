@@ -5,7 +5,9 @@ import org.junit.Test;
 import com.leetcode.Solutions.ListNode;
 import com.leetcode.Solutions.TreeNode;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.junit.Assert.assertArrayEquals;
@@ -69,9 +71,11 @@ public class TestSolutions {
 	@Test
 	public void TestMoveZeroes() {
 		int nums[] = { 0, 1, 0, 3, 12 };
-		assertThat(new int[] { 1, 3, 12, 0, 0 }, equalTo(solutions.moveZeroes(nums)));
+		solutions.moveZeroes(nums);
+		assertThat(new int[] { 1, 3, 12, 0, 0 }, equalTo(nums));
 		nums = new int[] { 1, 0 };
-		assertThat(new int[] { 1, 0 }, equalTo(solutions.moveZeroes(nums)));
+		solutions.moveZeroes(nums);
+		assertThat(new int[] { 1, 0 }, equalTo(nums));
 	}
 
 	@Test
@@ -201,8 +205,6 @@ public class TestSolutions {
 	}
 	@Test
 	public void testMaxSlidingWindow() {
-//		Input: nums = [1,3,-1,-3,5,3,6,7], and k = 3
-//		Output: [3,3,5,5,6,7]
 		int[] nums = {1,3,-1,-3,5,3,6,7};
 		int k = 3;
 		int[] expecteds = { 3, 3, 5, 5, 6, 7 };
@@ -249,8 +251,8 @@ public class TestSolutions {
 	}
 	@Test
 	public void testletterCombinations() {
-		// ["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"]
-		System.out.println(solutions.letterCombinations("23"));
+		List<String> expecteds = Arrays.asList("ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf");
+		assertThat(solutions.letterCombinations("23"), is(expecteds));
 	}
 	@Test
 	public void testPermute() {
@@ -266,18 +268,27 @@ public class TestSolutions {
 	}
 	@Test
 	public void testPathSum() {
-//		[
-//		   [5,4,11,2],
-//		   [5,8,4,5]
-//		]
 		Integer[] nums = { 5, 4, 8, 11, null, 13, 4, 7, 2, null, null, 5, 1 };
 		TreeNode root = Utils.createBinaryTree(nums);
-		System.out.println(solutions.pathSum(root, 22));
+		List<List<Integer>> expecteds = new ArrayList<>();
+		expecteds.add(Arrays.asList(5, 4, 11, 2));
+		expecteds.add(Arrays.asList(5, 8, 4, 5));
+		assertThat(solutions.pathSum(root, 22), is(expecteds));
 	}
 	@Test
 	public void testHasPathSum() {
 		Integer[] nums = { 5, 4, 8, 11, null, 13, 4, 7, 2, null, null, null, 1 };
 		TreeNode root = Utils.createBinaryTree(nums);
 		assertTrue(solutions.hasPathSum(root, 22));
+	}
+	@Test
+	public void testLevelOrder() {
+		Integer[] nums = { 3, 9, 20, null, null, 15, 7 };
+		TreeNode root = Utils.createBinaryTree(nums);
+		List<List<Integer>> expecteds = new ArrayList<>();
+		expecteds.add(Arrays.asList(3));
+		expecteds.add(Arrays.asList(9, 20));
+		expecteds.add(Arrays.asList(15, 7));
+		assertThat(solutions.levelOrder(root), is(expecteds));
 	}
 }

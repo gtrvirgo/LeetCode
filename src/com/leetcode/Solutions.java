@@ -69,29 +69,6 @@ public class Solutions {
 		return results;
 	}
 
-	public int[] moveZeroes(int nums[]) {
-		if (nums.length == 0) {
-			return nums;
-		}
-		int i = 0;
-		int j = 0;
-		while (i < nums.length && j < nums.length) {
-			while (i < nums.length && nums[i] != 0) {
-				i++;
-			}
-			j = Math.max(i, j);
-			while (j < nums.length && nums[j] == 0) {
-				j++;
-			}
-			if (i < nums.length && j < nums.length) {
-				int tmp = nums[i];
-				nums[i] = nums[j];
-				nums[j] = tmp;
-			}
-		}
-		return nums;
-	}
-
 	public int removeDuplicatesII(int nums[]) {
 		if (nums.length == 0) {
 			return 0;
@@ -897,6 +874,19 @@ public class Solutions {
 		return true;
 	}
 
+	public void moveZeroes(int nums[]) { // #283
+		for (int i = 0, cur = 0; i < nums.length; i++) {
+			if (nums[i] == 0) {
+				continue;
+			}
+			if (cur != i) {
+				nums[cur] = nums[i];
+				nums[i] = 0;
+			}
+			cur++;
+		}
+	}
+	
 	public int lengthOfLIS(int[] nums) { // #300
 		int[] dp = new int[nums.length];
 		int max = 0;
