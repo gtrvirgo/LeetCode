@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Stack;
 import java.util.LinkedList;
 import java.util.Deque;
@@ -645,6 +646,26 @@ public class Solutions {
 		}
 		prev = node;
 	}
+	
+	public List<List<Integer>> levelOrder(TreeNode root) { // #102
+		List<List<Integer>> solutions = new ArrayList<>();
+		if (root != null) {
+			Queue<TreeNode> queue = new LinkedList<>();
+			List<Integer> solution = new ArrayList<>();
+			queue.offer(root);
+			int count = queue.size();
+			while (!queue.isEmpty()) {
+				TreeNode node = queue.poll();
+				count--;
+				solution.add(node.val);
+				if (node.left != null) {
+					queue.offer(node.left);
+				}
+			}
+		}
+		return solutions;
+	}
+	
 	public boolean hasPathSum(TreeNode root, int sum) { // #112
 		if (root == null) {
 			return false;
