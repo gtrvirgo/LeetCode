@@ -661,6 +661,14 @@ public class Solutions {
 				if (node.left != null) {
 					queue.offer(node.left);
 				}
+				if (node.right != null) {
+					queue.offer(node.right);
+				}
+				if (count == 0) {
+					count = queue.size();
+					solutions.add(new ArrayList<>(solution));
+					solution.clear();
+				}
 			}
 		}
 		return solutions;
