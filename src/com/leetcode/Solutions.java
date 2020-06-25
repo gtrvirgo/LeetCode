@@ -1,6 +1,7 @@
 package com.leetcode;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,16 +23,6 @@ public class Solutions {
 			result ^= i;
 		}
 		return result;
-	}
-
-	public int removeDuplicates(int[] nums) {
-		int i = 0;
-		for (int j = 1; j < nums.length; j++) {
-			if (nums[i] != nums[j]) {
-				nums[++i] = nums[j];
-			}
-		}
-		return i + 1;
 	}
 
 	public List<Integer> findSubstring(String s, String words[]) {
@@ -67,27 +58,6 @@ public class Solutions {
 			}
 		}
 		return results;
-	}
-
-	public int removeDuplicatesII(int nums[]) {
-		if (nums.length == 0) {
-			return 0;
-		}
-		int i = 0;
-		int j = 1;
-		int duplicates = 0;
-		while (j < nums.length) {
-			if (nums[i] == nums[j]) {
-				if (++duplicates < 2) {
-					nums[++i] = nums[j];
-				}
-			} else {
-				nums[++i] = nums[j];
-				duplicates = 0;
-			}
-			j++;
-		}
-		return i + 1;
 	}
 
 //	public int lengthOfLongestSubstring(String s) {
@@ -185,26 +155,19 @@ public class Solutions {
 		}
 		return new int[] { ri, li };
 	}
-
-	public ListNode removeElements(ListNode head, int val) {
-		while (head != null && head.val == val) {
-			head = head.next;
-		}
-		if (head != null) {
-			ListNode cur = head.next;
-			ListNode last = head;
-			while (cur != null) {
-				if (cur.val != val) {
-					last.next = cur;
-					last = last.next;
-				}
-				cur = cur.next;
+	
+	public int[] twoSum(int[] nums, int target) { // #1
+		Map<Integer, Integer> map = new HashMap<>();
+		for (int i = 0; i < nums.length; i++) {
+			int sub = target - nums[i];
+			if (map.containsKey(sub)) {
+				return new int[] { map.get(sub), i };
 			}
-			last.next = null;
+			map.put(nums[i], i);
 		}
-		return head;
+		return new int[] {};
 	}
-
+	
 	public ListNode addTwoNumbers(ListNode l1, ListNode l2) { // #2
 		if (l1 == null) {
 			return l2;
@@ -328,6 +291,38 @@ public class Solutions {
 		return x == halfX || x == halfX / 10;
 	}
 	
+	public List<List<Integer>> threeSum(int[] nums) {
+		List<List<Integer>> solutions = new ArrayList<>();
+		if (nums.length > 2) {
+			Arrays.sort(nums);
+			for (int i = 0; i < nums.length - 2; i++) {
+				if (i > 0 && nums[i - 1] == nums[i]) {
+					continue;
+				}
+				int right = nums.length - 1;
+				int left = i + 1;
+				while (left < right) {
+					if (nums[i] + nums[left] + nums[right] < 0) {
+						left++;
+					} else if (nums[i] + nums[left] + nums[right] > 0) {
+						right--;
+					} else {
+						solutions.add(Arrays.asList(nums[i], nums[left], nums[right]));
+						while (left < right && nums[right] == nums[right - 1]) {
+							right--;
+						} 
+						while (left < right && nums[left] == nums[left + 1]) {
+							left++;
+						}
+						right--;
+						left++;
+					}
+				}
+			}
+		}
+		return solutions;
+	}
+	
 	char[][] dialer = {
 			{ 'a', 'b', 'c' }, { 'd', 'e', 'f' }, { 'g', 'h', 'i' },
 			{ 'j', 'k', 'l' }, { 'm', 'n', 'o' }, { 'p', 'q', 'r', 's' },
@@ -373,7 +368,7 @@ public class Solutions {
 		}
 		return stack.isEmpty();
 	}
-	public List<String> generateParenthesis(int n) {
+	public List<String> generateParenthesis(int n) { // #22
 		List<String> solutions = new ArrayList<>();
 		if (n >= 0) {
 			helper(n, n, solutions, new char[n * 2]);
@@ -394,6 +389,31 @@ public class Solutions {
 			helper(left, right - 1, solutions, solution);
 		}
 	}
+
+	public int removeDuplicates(int[] nums) { // #26
+		int i = 0;
+		for (int j = 1; j < nums.length; j++) {
+			if (nums[i] != nums[j]) {
+				nums[++i] = nums[j];
+			}
+		}
+		return i + 1;
+	}
+	
+	public int removeElement(int[] nums, int val) { // #27
+		int cur = 0;
+		for (int i = 0; i < nums.length; i++) {
+			if (nums[i] == val) {
+				continue;
+			}
+			if (cur != i) {
+				nums[cur] = nums[i];
+			}
+			cur++;
+		}
+		return cur;
+	}
+	
 	public List<List<Integer>> permute(int[] nums) { // #46
 		List<List<Integer>> solutions = new ArrayList<>();
 		if (nums.length > 0) {
@@ -559,6 +579,27 @@ public class Solutions {
 				cur++;
 			}
 		}
+	}
+
+	public int removeDuplicatesII(int nums[]) { // #80
+		if (nums.length == 0) {
+			return 0;
+		}
+		int i = 0;
+		int j = 1;
+		int duplicates = 0;
+		while (j < nums.length) {
+			if (nums[i] == nums[j]) {
+				if (++duplicates < 2) {
+					nums[++i] = nums[j];
+				}
+			} else {
+				nums[++i] = nums[j];
+				duplicates = 0;
+			}
+			j++;
+		}
+		return i + 1;
 	}
 
 	public ListNode partition(ListNode head, int x) { // #86
@@ -814,6 +855,25 @@ public class Solutions {
 		return curA;
 	}
 
+	public ListNode removeElements(ListNode head, int val) { // #203
+		while (head != null && head.val == val) {
+			head = head.next;
+		}
+		if (head != null) {
+			ListNode cur = head.next;
+			ListNode last = head;
+			while (cur != null) {
+				if (cur.val != val) {
+					last.next = cur;
+					last = last.next;
+				}
+				cur = cur.next;
+			}
+			last.next = null;
+		}
+		return head;
+	}
+	
 	public boolean isPalindrome(ListNode head) { // #234
 		if (head == null || head.next == null) {
 			return true;

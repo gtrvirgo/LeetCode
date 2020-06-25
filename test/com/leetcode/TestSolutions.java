@@ -303,4 +303,25 @@ public class TestSolutions {
 		assertFalse(solutions.isPalindrome(-121));
 		assertFalse(solutions.isPalindrome(10));
 	}
+	@Test
+	public void testRemoveElement() {
+		int[] nums = { 3,2,2,3 };
+		assertThat(solutions.removeElement(nums, 3), is(2));
+		nums = new int[] { 0,1,2,2,3,0,4,2 };
+		assertThat(solutions.removeElement(nums, 2), is(5));
+	}
+	@Test
+	public void testTwoSum() {
+		int[] nums = { 2, 7, 11, 5 }; 
+		int target = 9;
+		int[] expecteds = { 0, 1 };
+		assertThat(solutions.twoSum(nums, target), is(expecteds));
+	}
+	@Test
+	public void testThreeSum() {
+		int[] nums = { -1, 0, 1, 2, -1, -4 };
+		List<List<Integer>> actuals = solutions.threeSum(nums);
+		assertThat(actuals, hasItem(Arrays.asList(-1, 0, 1)));
+		assertThat(actuals, hasItem(Arrays.asList(-1, -1, 2)));
+	}
 }
