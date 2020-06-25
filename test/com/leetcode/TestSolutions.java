@@ -176,9 +176,8 @@ public class TestSolutions {
 	}
 	@Test
 	public void testPartition() {
-//		Input: head = 1->4->3->2->5->2, x = 3
-//		Output: 1->2->2->4->3->5
 		int[] values = { 1, 4, 3, 2, 5, 2 };
+		int[] expecteds = { 1, 2, 2, 4, 3, 5 };
 		int x = 3;
 		ListNode head = new ListNode(values[0]);
 		ListNode cur = head;
@@ -187,8 +186,8 @@ public class TestSolutions {
 			cur = cur.next;
 		}
 		ListNode ans = solutions.partition(head, x);
-		while (ans != null) {
-			System.out.println(ans.val);
+		for (int i = 0; i < expecteds.length; i++) {
+			assertThat(ans.val, is(expecteds[i]));
 			ans = ans.next;
 		}
 	}
@@ -290,5 +289,18 @@ public class TestSolutions {
 		expecteds.add(Arrays.asList(9, 20));
 		expecteds.add(Arrays.asList(15, 7));
 		assertThat(solutions.levelOrder(root), is(expecteds));
+	}
+	@Test
+	public void testReverse() {
+		assertThat(solutions.reverse(123), is(321));
+		assertThat(solutions.reverse(-123), is(-321));
+		assertThat(solutions.reverse(120), is(21));
+		assertThat(solutions.reverse(1534236469), is(0));
+	}
+	@Test
+	public void testPalindromeNumber() {
+		assertTrue(solutions.isPalindrome(121));
+		assertFalse(solutions.isPalindrome(-121));
+		assertFalse(solutions.isPalindrome(10));
 	}
 }

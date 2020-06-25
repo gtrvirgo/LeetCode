@@ -299,6 +299,35 @@ public class Solutions {
 		return ans;
 	}
 	
+	public int reverse(int x) { // #7
+		int rev = 0;
+		int pop = 0;
+		while (x != 0) {
+			pop = x % 10;
+			x /= 10;
+			if (rev > Integer.MAX_VALUE / 10 || rev == Integer.MAX_VALUE / 10 && pop > 7) {
+				return 0;
+			}
+			if (rev < Integer.MIN_VALUE / 10 || rev == Integer.MIN_VALUE / 10 && pop < -8) {
+				return 0;
+			}
+			rev = rev * 10 + pop;
+		}
+		return rev;
+	}
+	
+	public boolean isPalindrome(int x) { // #9
+		if (x < 0 || (x % 10 == 0 && x != 0)) {
+			return false;
+		}
+		int halfX = 0;
+		while (x > halfX) {
+			halfX = halfX * 10 + x % 10;
+			x /= 10;
+		}
+		return x == halfX || x == halfX / 10;
+	}
+	
 	char[][] dialer = {
 			{ 'a', 'b', 'c' }, { 'd', 'e', 'f' }, { 'g', 'h', 'i' },
 			{ 'j', 'k', 'l' }, { 'm', 'n', 'o' }, { 'p', 'q', 'r', 's' },
