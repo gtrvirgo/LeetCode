@@ -14,6 +14,7 @@ import java.util.Set;
 import static org.hamcrest.MatcherAssert.*;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.hamcrest.CoreMatchers.*;
 
@@ -89,13 +90,6 @@ public class TestSolutions {
 		assertThat(expecteds, equalTo(actuals));
 	}
 	@Test
-	public void testReverseWords() {
-		System.out.println("666_" + solutions.reverseWords(" ") + "_666");
-		System.out.println("666_" + solutions.reverseWords("  hello world!     ") + "_666");
-		System.out.println("666_" + solutions.reverseWords("a good   example") + "_666");
-		System.out.println("666_" + solutions.reverseWords("are you ok") + "_666");
-	}
-	@Test
 	public void testLengthOfLongestSubstring() {
 		assertThat(solutions.lengthOfLongestSubstring("abcabcbb"), is(3));
 	}
@@ -121,8 +115,7 @@ public class TestSolutions {
 	public void testSortColors() {
 		int[] nums = { 2, 0, 2, 1, 1, 0 };
 		solutions.sortColors(nums);
-		System.out.println(Arrays.toString(nums));
-		int[] expecteds = { 0,0,1,1,2,2 };
+		int[] expecteds = { 0, 0, 1, 1, 2, 2 };
 		assertArrayEquals(expecteds, nums);
 		nums = new int[] { 2, 0, 1 };
 		expecteds = new int[] { 0, 1, 2 };
@@ -148,11 +141,12 @@ public class TestSolutions {
 			node = node.next;
 		}
 		ListNode ans = solutions.removeElements(head, 4);
-		System.out.println(ans.val);
-		while (ans != null) {
-			System.out.println(ans.val);
+		int[] expecteds = { 3, 2, 5, 5 };
+		for (int num : expecteds) {
+			assertThat(ans.val, is(num));
 			ans = ans.next;
 		}
+		assertNull(ans);
 	}
 	@Test
 	public void testAddTwoNumbers() {
@@ -171,10 +165,12 @@ public class TestSolutions {
 			p2 = p2.next;
 		}
 		ListNode ans = solutions.addTwoNumbers(l1, l2);
-		while (ans != null) {
-			System.out.println(ans.val);
+		int[] expecteds = { 7, 3, 0, 1 };
+		for (int num : expecteds) {
+			assertThat(ans.val, is(num));
 			ans = ans.next;
 		}
+		assertNull(ans);
 	}
 	@Test
 	public void testPartition() {
@@ -192,6 +188,7 @@ public class TestSolutions {
 			assertThat(ans.val, is(expecteds[i]));
 			ans = ans.next;
 		}
+		assertNull(ans);
 	}
 	@Test
 	public void testIsPalindrome() {
@@ -238,7 +235,20 @@ public class TestSolutions {
 	}
 	@Test
 	public void testSolveNQueens() {
-		System.out.println(solutions.solveNQueens(4));
+		Set<List<String>> expecteds = new HashSet<>();
+		expecteds.add(Arrays.asList(
+			".Q..",
+			"...Q",
+			"Q...",
+			"..Q."
+		));
+		expecteds.add(Arrays.asList(
+			"..Q.",
+			"Q...",
+			"...Q",
+			".Q.."
+		));
+		assertThat(new HashSet<List<String>>(solutions.solveNQueens(4)), is(expecteds));
 	}
 	@Test
 	public void testLargestBSTSubtree() {
@@ -253,15 +263,35 @@ public class TestSolutions {
 	}
 	@Test
 	public void testPermute() {
-		System.out.println(solutions.permute(new int[] { 1, 2, 3 }));
+		int[] nums = { 1, 2, 3 };
+		Set<List<Integer>> expecteds = new HashSet<>();
+		expecteds.add(Arrays.asList(1, 2, 3));
+		expecteds.add(Arrays.asList(1, 3, 2));
+		expecteds.add(Arrays.asList(2, 1, 3));
+		expecteds.add(Arrays.asList(2, 3, 1));
+		expecteds.add(Arrays.asList(3, 1, 2));
+		expecteds.add(Arrays.asList(3, 2, 1));
+		assertThat(new HashSet<List<Integer>>(solutions.permute(nums)), is(expecteds));
 	}
 	@Test
 	public void testPermuteUnique() {
-		System.out.println(solutions.permuteUnique(new int[] { 1, 1, 2 }));
+		int[] nums = { 1, 1, 2 };
+		Set<List<Integer>> expecteds = new HashSet<>();
+		expecteds.add(Arrays.asList(1, 1, 2));
+		expecteds.add(Arrays.asList(1, 2, 1));
+		expecteds.add(Arrays.asList(2, 1, 1));
+		assertThat(new HashSet<List<Integer>>(solutions.permuteUnique(nums)), is(expecteds));
 	}
 	@Test
 	public void testGenerateParenthesis() {
-		System.out.println(solutions.generateParenthesis(3));
+		Set<String> expecteds = new HashSet<>(Arrays.asList(
+			"((()))",
+	        "(()())",
+	        "(())()",
+	        "()(())",
+	        "()()()"
+	    ));
+		assertThat(new HashSet<String>(solutions.generateParenthesis(3)), is(expecteds));
 	}
 	@Test
 	public void testPathSum() {
