@@ -291,6 +291,31 @@ public class Solutions {
 		return x == halfX || x == halfX / 10;
 	}
 	
+	public String longestCommonPrefix(String[] strs) { // #14
+		if (strs.length == 0 || strs == null) {
+			return "";
+		}
+		String prefix = strs[0];
+		for (int i = 1; i < strs.length; i++) {
+			prefix = updatePrefix(prefix, strs[i]);
+			if (prefix.length() == 0) {
+				break;
+			}
+		}
+		return prefix;
+	}
+	String updatePrefix(String prefix, String str2) {
+		int len = Math.min(prefix.length(), str2.length());
+		int i = 0;
+		while (i < len) {
+			if (prefix.charAt(i) != str2.charAt(i)) {
+				break;
+			}
+			i++;
+		}
+		return prefix.substring(0, i);
+	}
+	
 	public List<List<Integer>> threeSum(int[] nums) { // #15
 		List<List<Integer>> solutions = new ArrayList<>();
 		if (nums.length > 2) {
@@ -468,6 +493,92 @@ public class Solutions {
 		return left;
 	}
 	
+//	public String countAndSay(int n) { // #38
+//		if (n == 1) {
+//			return "1";
+//		}
+//		String previous = countAndSay(n - 1);
+//		StringBuilder sb = new StringBuilder();
+//		Integer count = 1;
+//		for (int i = 0; i < previous.length(); i++) {
+//			if (i + 1 < previous.length() && previous.charAt(i) == previous.charAt(i + 1)) {
+//				count++;
+//			} else {
+//				sb.append(count.toString()).append(previous.charAt(i));
+//				count = 1;
+//			}
+//		}
+//		return sb.toString();
+//	}
+	
+	public String countAndSay(int n) { // #38
+		String previous = "1";
+		while (n > 1) {
+			StringBuilder sb = new StringBuilder();
+			Integer count = 1;
+			for (int i = 0; i < previous.length(); i++) {
+				if (i + 1 < previous.length() && previous.charAt(i) == previous.charAt(i + 1)) {
+					count++;
+				} else {
+					sb.append(count.toString()).append(previous.charAt(i));
+					count = 1;
+				}
+			}
+			previous = sb.toString();
+			n--;
+		}
+		return previous;
+	}
+	
+	public List<List<Integer>> combinationSum(int[] candidates, int target) { // #39
+		List<List<Integer>> solutions = new ArrayList<>();
+		Arrays.sort(candidates);
+		helper(candidates, target, 0, new LinkedList<Integer>(), solutions);
+		return solutions;
+	}
+	void helper(int[] candidates, int remain, int begin,
+			LinkedList<Integer> solution, List<List<Integer>> solutions) {
+		if (remain == 0) {
+			solutions.add(new LinkedList<>(solution));
+			return;
+		}
+		for (int i = begin; i < candidates.length; i++) {
+			if (remain - candidates[i] < 0) {
+				break;
+			}
+			solution.addLast(candidates[i]);
+			helper(candidates, remain - candidates[i], i, solution, solutions);
+			solution.removeLast();
+		}
+	}
+	
+	public List<List<Integer>> combinationSum2(int[] candidates, int target) { // #40
+		List<List<Integer>> solutions = new ArrayList<>();
+		if (candidates.length > 0) {
+			Arrays.sort(candidates);
+			helper2(candidates, target, 0, new LinkedList<Integer>(), solutions);
+		}
+		return solutions;
+	}
+	void helper2(int[] candidates, int remain, int begin,
+			LinkedList<Integer> solution, List<List<Integer>> solutions) {
+		if (remain == 0) {
+			solutions.add(new LinkedList<>(solution));
+			return;
+		}
+		for (int i = begin; i < candidates.length; i++) {
+			if (remain - candidates[i] < 0) {
+				break;
+			}
+			if (i > begin && candidates[i] == candidates[i - 1]) {
+				continue;
+			}
+			solution.addLast(candidates[i]);
+			helper2(candidates, remain - candidates[i], i + 1, solution, solutions);
+			solution.removeLast();
+		}
+	}
+	
 	public List<List<Integer>> permute(int[] nums) { // #46
 		List<List<Integer>> solutions = new ArrayList<>();
 		if (nums.length > 0) {
@@ -528,15 +639,27 @@ public class Solutions {
 		return dp[grid[0].length - 1];
 	}
 	
+//	public double myPow(double x, int n) { // #50
+//		if (n == 0) {
+//			return 1;
+//		}
+//		boolean isOdd = (n & 1) == 1;
+//		double half = myPow(x, n / 2);
+//		half *= half;
+//		x = n > 0 ? x : 1 / x;
+//		return isOdd ? half * x : half;
+//	}
 	public double myPow(double x, int n) {
-		if (n == 0) {
-			return 1;
+		long exp = n > 0 ? n : -1 * (long) n;
+		double ans = 1.0;
+		while (exp != 0) {
+			if ((exp & 1) == 1) {
+				ans *= x;
+			}
+			x *= x;
+			exp >>= 1;
 		}
-		boolean isOdd = (n & 1) == 1;
-		double half = myPow(x, n / 2);
-		half *= half;
-		x = n > 0 ? x : 1 / x;
-		return isOdd ? half * x : half;
+		return n > 0 ? ans : 1 / ans;
 	}
 
 	public List<List<String>> solveNQueens(int n) { // #51

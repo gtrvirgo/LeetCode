@@ -7,7 +7,9 @@ import com.leetcode.Solutions.TreeNode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.junit.Assert.assertArrayEquals;
@@ -211,15 +213,11 @@ public class TestSolutions {
 	}
 	@Test
 	public void testIsSubtree() {
-		TreeNode s = new TreeNode(3);
-		s.left = new TreeNode(4);
-		s.right = new TreeNode(5);
-		s.left.left = new TreeNode(1);
-		s.left.right = new TreeNode(2);
-		TreeNode t = new TreeNode(4);
-		t.left = new TreeNode(1);
-		t.right = new TreeNode(2);
+		TreeNode s = Utils.createBinaryTree(new Integer[] { 3, 4, 5, 1, 2 });
+		TreeNode t = Utils.createBinaryTree(new Integer[] { 4, 1, 2 });
 		assertTrue(solutions.isSubtree(s, t));
+		s = Utils.createBinaryTree(new Integer[] { 3, 4, 5, 1, 2, null, null, null, null, 0, null });
+		assertFalse(solutions.isSubtree(s, t));
 	}
 	@Test
 	public void testMaxProfit() {
@@ -320,9 +318,10 @@ public class TestSolutions {
 	@Test
 	public void testThreeSum() {
 		int[] nums = { -1, 0, 1, 2, -1, -4 };
-		List<List<Integer>> actuals = solutions.threeSum(nums);
-		assertThat(actuals, hasItem(Arrays.asList(-1, 0, 1)));
-		assertThat(actuals, hasItem(Arrays.asList(-1, -1, 2)));
+		Set<List<Integer>> expecteds = new HashSet<>();
+		expecteds.add(Arrays.asList(-1, 0, 1));
+		expecteds.add(Arrays.asList(-1, -1, 2));
+		assertThat(new HashSet<List<Integer>>(solutions.threeSum(nums)), is(expecteds));
 	}
 	@Test
 	public void testSearchInsert() {
@@ -343,5 +342,46 @@ public class TestSolutions {
 		assertThat(solutions.myPow(2.00000, 10), is(1024.00000));
 		assertThat((double) Math.round(solutions.myPow(2.10000, 3) * 100000) / 100000, is(9.26100));
 		assertThat(solutions.myPow(2.00000, -2), is(0.25000));
+	}
+	@Test
+	public void testLongestCommonPrefix() {
+		String[] strs = { "flower", "flow", "flight" };
+		assertThat(solutions.longestCommonPrefix(strs), is("fl"));
+		strs = new String[] { "dog", "racecar", "car" };
+		assertThat(solutions.longestCommonPrefix(strs), is(""));
+	}
+	@Test
+	public void testCountAndSay() {
+		assertThat(solutions.countAndSay(1), is("1"));
+		assertThat(solutions.countAndSay(4), is("1211"));
+		assertThat(solutions.countAndSay(5), is("111221"));
+	}
+	@Test
+	public void testCombinationSum() {
+		Set<List<Integer>> expecteds = new HashSet<>();
+		expecteds.add(Arrays.asList(7));
+		expecteds.add(Arrays.asList(2, 2, 3));
+		int[] candidates = { 2, 3, 6, 7 };
+		int target = 7;
+		assertThat(new HashSet<List<Integer>>(solutions.combinationSum(candidates, target)), is(expecteds));
+		
+		expecteds.clear();
+		expecteds.add(Arrays.asList(3, 5));
+		expecteds.add(Arrays.asList(2, 3, 3));
+		expecteds.add(Arrays.asList(2, 2, 2, 2));
+		candidates = new int[] { 2, 3, 5 };
+		target = 8;
+		assertThat(new HashSet<List<Integer>>(solutions.combinationSum(candidates, target)), is(expecteds));
+	}
+	@Test
+	public void testCombinationSum2() {
+		int[] candidates = {10,1,2,7,6,1,5};
+		int target = 8;
+		Set<List<Integer>> expecteds = new HashSet<>();
+		expecteds.add(Arrays.asList(1, 7));
+		expecteds.add(Arrays.asList(1, 2, 5));
+		expecteds.add(Arrays.asList(2, 6));
+		expecteds.add(Arrays.asList(1, 1, 6));
+		assertThat(new HashSet<List<Integer>>(solutions.combinationSum2(candidates, target)), is(expecteds));
 	}
 }
