@@ -324,4 +324,24 @@ public class TestSolutions {
 		assertThat(actuals, hasItem(Arrays.asList(-1, 0, 1)));
 		assertThat(actuals, hasItem(Arrays.asList(-1, -1, 2)));
 	}
+	@Test
+	public void testSearchInsert() {
+		int[] nums = { 1, 3, 5, 6 };
+		assertThat(solutions.searchInsert(nums, 5), is(2));
+		assertThat(solutions.searchInsert(nums, 2), is(1));
+		assertThat(solutions.searchInsert(nums, 7), is(4));
+		assertThat(solutions.searchInsert(nums, 0), is(0));
+	}
+	@Test
+	public void testStrStr() {
+		assertThat(solutions.strStr("hello", "ll"), is(2));
+		assertThat(solutions.strStr("aaaaa", "bba"), is(-1));
+		assertThat(solutions.strStr("aaa", "aaa"), is(0));
+	}
+	@Test
+	public void testMyPow() {
+		assertThat(solutions.myPow(2.00000, 10), is(1024.00000));
+		assertThat((double) Math.round(solutions.myPow(2.10000, 3) * 100000) / 100000, is(9.26100));
+		assertThat(solutions.myPow(2.00000, -2), is(0.25000));
+	}
 }

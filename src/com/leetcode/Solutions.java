@@ -159,9 +159,9 @@ public class Solutions {
 	public int[] twoSum(int[] nums, int target) { // #1
 		Map<Integer, Integer> map = new HashMap<>();
 		for (int i = 0; i < nums.length; i++) {
-			int sub = target - nums[i];
-			if (map.containsKey(sub)) {
-				return new int[] { map.get(sub), i };
+			Integer prev = map.get(target - nums[i]);
+			if (prev != null) {
+				return new int[] { prev, i };
 			}
 			map.put(nums[i], i);
 		}
@@ -291,7 +291,7 @@ public class Solutions {
 		return x == halfX || x == halfX / 10;
 	}
 	
-	public List<List<Integer>> threeSum(int[] nums) {
+	public List<List<Integer>> threeSum(int[] nums) { // #15
 		List<List<Integer>> solutions = new ArrayList<>();
 		if (nums.length > 2) {
 			Arrays.sort(nums);
@@ -414,6 +414,60 @@ public class Solutions {
 		return cur;
 	}
 	
+	public int strStr(String haystack, String needle) { // #28
+		if (needle.length() == 0) {
+			return 0;
+		}
+		int[] next = getNext(needle);
+		int pHayStack = 0;
+		int pNeedle = 0;
+		while (pHayStack < haystack.length() && pNeedle < needle.length()) {
+			if (pNeedle == -1 || haystack.charAt(pHayStack) == needle.charAt(pNeedle)) {
+				pHayStack++;
+				pNeedle++;
+			} else {
+				pNeedle = next[pNeedle];
+			}
+		}
+		if (pNeedle == needle.length()) {
+			return pHayStack - pNeedle;
+		}
+		return -1;
+	}
+	
+	int[] getNext(String needle) {
+		int[] next = new int[needle.length()];
+		next[0] = -1;
+		int front = -1;
+		int rear = 0;
+		while (rear < needle.length() - 1) {
+			if (front == -1 || needle.charAt(front) == needle.charAt(rear)) {
+				front++;
+				rear++;
+				next[rear] = needle.charAt(front) == needle.charAt(rear) ? next[front] : front;
+			} else {
+				front = next[front];
+			}
+		}
+		return next;
+	}
+	
+	public int searchInsert(int[] nums, int target) { // #35
+		int left = 0;
+		int right = nums.length;
+		while (left < right) {
+			int mid = (left + right) / 2;
+			if (nums[mid] > target) {
+				right = mid;
+			} else if (nums[mid] < target) {
+				left = mid + 1;
+			} else {
+				return mid;
+			}
+		}
+		return left;
+	}
+	
 	public List<List<Integer>> permute(int[] nums) { // #46
 		List<List<Integer>> solutions = new ArrayList<>();
 		if (nums.length > 0) {
@@ -436,7 +490,7 @@ public class Solutions {
 			Utils.swap(nums, i, level);
 		}
 	}
-	public List<List<Integer>> permuteUnique(int[] nums) {
+	public List<List<Integer>> permuteUnique(int[] nums) { // #47
 		List<List<Integer>> solutions = new ArrayList<>();
 		if (nums.length > 0) {
 			boolean[] used = new boolean[nums.length];
@@ -472,6 +526,17 @@ public class Solutions {
 			}
 		}
 		return dp[grid[0].length - 1];
+	}
+	
+	public double myPow(double x, int n) {
+		if (n == 0) {
+			return 1;
+		}
+		boolean isOdd = (n & 1) == 1;
+		double half = myPow(x, n / 2);
+		half *= half;
+		x = n > 0 ? x : 1 / x;
+		return isOdd ? half * x : half;
 	}
 
 	public List<List<String>> solveNQueens(int n) { // #51
