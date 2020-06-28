@@ -705,6 +705,36 @@ public class Solutions {
 		}
 		return true;
 	}
+	
+	public int[] plusOne(int[] digits) { // #66
+		for (int i = digits.length - 1; i >= 0; i--) {
+			digits[i]++;
+			digits[i] %= 10;
+			if (digits[i] != 0) {
+				return digits;
+			}
+		}
+		digits = new int[digits.length + 1];
+		digits[0] = 1;
+		return digits;
+	}
+	
+	public String addBinary(String a, String b) { // #67
+		int len = Math.max(a.length(), b.length());
+		StringBuilder sb = new StringBuilder();
+		int carry = 0;
+		for (int i = 0; i < len; i++) {
+			carry += i < a.length() ? a.charAt(a.length() - i - 1) - '0' : 0;
+			carry += i < b.length() ? b.charAt(b.length() - i - 1) - '0' : 0;
+			sb.append(carry % 2);
+			carry /= 2;
+		}
+		if (carry != 0) {
+			sb.append(carry);
+		}
+		sb.reverse();
+		return sb.toString();
+	}
 
 	public int minDistance(String word1, String word2) { // #72
 //		int[][] dp = new int[word1.length() + 1][word2.length() + 1];

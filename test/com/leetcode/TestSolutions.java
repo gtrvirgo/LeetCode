@@ -414,4 +414,16 @@ public class TestSolutions {
 		expecteds.add(Arrays.asList(1, 1, 6));
 		assertThat(new HashSet<List<Integer>>(solutions.combinationSum2(candidates, target)), is(expecteds));
 	}
+	@Test
+	public void testPlusOne() {
+		int[] digits = { 1, 2, 3 };
+		assertThat(solutions.plusOne(digits), is(new int[] { 1, 2, 4 }));
+		digits = new int[] { 4, 3, 2, 1 };
+		assertThat(solutions.plusOne(digits), is(new int[] { 4, 3, 2, 2 }));
+	}
+	@Test
+	public void testAddBinary() {
+		assertThat(solutions.addBinary("11", "1"), is("100"));
+		assertThat(solutions.addBinary("1010", "1011"), is("10101"));
+	}
 }
