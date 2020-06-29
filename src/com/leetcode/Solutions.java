@@ -17,14 +17,6 @@ public class Solutions {
 		return s.equalsIgnoreCase(new StringBuilder(s).reverse().toString());
 	}
 
-	public int singleNumber(int[] nums) {
-		int result = 0;
-		for (int i : nums) {
-			result ^= i;
-		}
-		return result;
-	}
-
 	public List<Integer> findSubstring(String s, String words[]) {
 		List<Integer> results = new ArrayList<>();
 		if (words.length == 0) {
@@ -735,6 +727,22 @@ public class Solutions {
 		sb.reverse();
 		return sb.toString();
 	}
+	
+	public int mySqrt(int x) { // #69
+		int l = 0;
+		int r = x;
+		int ans = -1;
+		while (l <= r) {
+			int mid = (l + r) / 2;
+			if ((long) mid * mid <= x) {
+				ans = mid;
+				l = mid + 1;
+			} else {
+				r = mid - 1;
+			}
+		}
+		return ans;
+	}
 
 	public int minDistance(String word1, String word2) { // #72
 //		int[][] dp = new int[word1.length() + 1][word2.length() + 1];
@@ -984,6 +992,24 @@ public class Solutions {
 			}
 		}
 		return maxProfit;
+	}
+
+	public int singleNumber(int[] nums) { // #136
+		int result = 0;
+		for (int num : nums) {
+			result ^= num;
+		}
+		return result;
+	}
+	
+	public int singleNumberII(int[] nums) { // #137
+		int once = 0;
+		int twice = 0;
+		for (int num : nums) {
+			once = once ^ num & ~twice;
+			twice = twice ^ num & ~once;
+		}
+		return once;
 	}
 
 	public String reverseWords(String s) { // #151
@@ -1254,6 +1280,15 @@ public class Solutions {
 			return 0;
 		}
 		return 1 + getCount(root.left) + getCount(root.right);
+	}
+	
+	public boolean isPerfectSquare(int num) { // #367
+		int odd = 1;
+		while (num > 0) {
+			num -= odd;
+			odd += 2;
+		}
+		return num == 0;
 	}
 	
 	public boolean isSubtree(TreeNode s, TreeNode t) { // #572

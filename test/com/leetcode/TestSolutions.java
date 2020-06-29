@@ -426,4 +426,22 @@ public class TestSolutions {
 		assertThat(solutions.addBinary("11", "1"), is("100"));
 		assertThat(solutions.addBinary("1010", "1011"), is("10101"));
 	}
+	@Test
+	public void testSingleNumberII() {
+		int[] nums = { 2, 2, 3, 2 };
+		assertThat(solutions.singleNumberII(nums), is(3));
+		nums = new int[] { 0, 1, 0, 1, 0, 1, 99 };
+		assertThat(solutions.singleNumberII(nums), is(99));
+	}
+	@Test
+	public void testMySqrt() {
+		assertThat(solutions.mySqrt(4), is(2));
+		assertThat(solutions.mySqrt(8), is(2));
+	}
+	@Test
+	public void testIsPerfectSquare() {
+		assertTrue(solutions.isPerfectSquare(16));
+		assertFalse(solutions.isPerfectSquare(14));
+		assertTrue(solutions.isPerfectSquare(808201));
+	}
 }
