@@ -69,6 +69,10 @@ public class TestSolutions {
 		s = "";
 		words = new String[] {};
 		assertThat(new Object[] {}, equalTo(solutions.findSubstring(s, words).toArray()));
+		s = "barfoothefoobarman";
+		words = new String[] {"foo", "bar"};
+		Set<Integer> expecteds = new HashSet<>(Arrays.asList(0, 9));
+		assertThat(new HashSet<Integer>(solutions.findSubstring(s, words)), is(expecteds));
 	}
 
 	@Test
@@ -130,6 +134,9 @@ public class TestSolutions {
 		nums = new int[] {};
 		expecteds = new int[] { -1, -1 };
 		assertArrayEquals(solutions.subSort(nums), expecteds);
+		nums = new int[] { 1,2,4,7,10,11,7,12,6,7,16,18,19 };
+		expecteds = new int[] { 3, 9 };
+		assertThat(solutions.subSort(nums), is(expecteds));
 	}
 	@Test
 	public void testRemoveElements() {
@@ -443,5 +450,39 @@ public class TestSolutions {
 		assertTrue(solutions.isPerfectSquare(16));
 		assertFalse(solutions.isPerfectSquare(14));
 		assertTrue(solutions.isPerfectSquare(808201));
+	}
+	@Test
+	public void testMaxSubArray() {
+		int[] nums = { -2,1,-3,4,-1,2,1,-5,4 };
+		assertThat(solutions.maxSubArray(nums), is(6));
+		nums = new int[] { 1 };
+		assertThat(solutions.maxSubArray(nums), is(1));
+	}
+	@Test
+	public void testGenerate() {
+		List<List<Integer>> expecteds = new ArrayList<>();
+		expecteds.add(Arrays.asList(1));
+		expecteds.add(Arrays.asList(1, 1));
+		expecteds.add(Arrays.asList(1, 2, 1));
+		expecteds.add(Arrays.asList(1, 3, 3, 1));
+		expecteds.add(Arrays.asList(1, 4, 6, 4, 1));
+		assertThat(solutions.generate(5), is(expecteds));
+	}
+	@Test
+	public void testGetRow() {
+		assertThat(solutions.getRow(3), is(Arrays.asList(1, 3, 3, 1)));
+		assertThat(solutions.getRow(0), is(Arrays.asList(1)));
+		assertThat(solutions.getRow(1), is(Arrays.asList(1, 1)));
+	}
+	@Test
+	public void testReverseString() {
+		char[] s = { 'h', 'e', 'l', 'l', 'o' };
+		char[] expecteds = { 'o', 'l', 'l', 'e', 'h' };
+		solutions.reverseString(s);
+		assertThat(s, is(expecteds));
+		s = new char[] { 'H', 'a', 'n', 'n', 'a', 'h' };
+		expecteds = new char[] { 'h', 'a', 'n', 'n', 'a', 'H' };
+		solutions.reverseString(s);
+		assertThat(s, is(expecteds));
 	}
 }

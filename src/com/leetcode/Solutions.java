@@ -12,142 +12,6 @@ import java.util.Deque;
 
 public class Solutions {
 
-	public boolean isPalindrome(String s) {
-		s = s.replaceAll("\\W", "");
-		return s.equalsIgnoreCase(new StringBuilder(s).reverse().toString());
-	}
-
-	public List<Integer> findSubstring(String s, String words[]) {
-		List<Integer> results = new ArrayList<>();
-		if (words.length == 0) {
-			return results;
-		}
-		Map<String, Integer> map = new HashMap<>();
-		for (String word : words) {
-			map.put(word, map.getOrDefault(word, 0) + 1);
-		}
-		Map<String, Integer> found = new HashMap<>();
-		int n = words[0].length();
-		for (int i = 0; i <= s.length() - words.length * n; i++) {
-			found.clear();
-			int j = 0;
-			for (; j < words.length; j++) {
-				if (i + j * n + n > s.length()) {
-					break;
-				}
-				String str = s.substring(i + j * n, i + j * n + n);
-				if (map.containsKey(str)) {
-					found.put(str, found.getOrDefault(str, 0) + 1);
-				} else {
-					break;
-				}
-				if (map.get(str) < found.get(str)) {
-					break;
-				}
-			}
-			if (j == words.length) {
-				results.add(i);
-			}
-		}
-		return results;
-	}
-
-//	public int lengthOfLongestSubstring(String s) {
-//		if (s == null) {
-//			return 0;
-//		}
-//		char[] chars = s.toCharArray();
-//		if (chars.length == 0) {
-//			return 0;
-//		}
-//		Map<Character, Integer> lastOccur = new HashMap<>();
-//		lastOccur.put(chars[0], 0);
-//		int li = 0; // the beginning of the substring i - 1 ends up
-//		int longest = 1;
-//		for (int i = 1; i < chars.length; i++) {
-//			//Integer pi = lastOccur.getOrDefault(chars[i], -1); // the last occurence of i character
-//			Integer pi = lastOccur.get(chars[i]);
-//			if (pi != null && li <= pi) {
-//				li = pi + 1;
-//			}
-//			lastOccur.put(chars[i], i);
-//			longest = Math.max(longest, i - li + 1);
-//		}
-//		return longest;
-//	}
-	public int lengthOfLongestSubstring(String s) {
-		if (s == null) {
-			return 0;
-		}
-		char[] chars = s.toCharArray();
-		if (chars.length == 0) {
-			return 0;
-		}
-		int[] lastOccur = new int[128]; // only contains ascii character
-		for (int i = 0; i < lastOccur.length; i++) {
-			lastOccur[i] = -1;
-		}
-		lastOccur[chars[0]] = 0;
-		int li = 0; // the beginning of the substring i - 1 ends up
-		int longest = 1;
-		for (int i = 1; i < chars.length; i++) {
-			// Integer pi = lastOccur.getOrDefault(chars[i], -1); // the last occurence of i
-			// character
-			int pi = lastOccur[chars[i]];
-			if (li <= pi) {
-				li = pi + 1;
-			}
-			lastOccur[chars[i]] = i;
-			longest = Math.max(longest, i - li + 1);
-		}
-		return longest;
-	}
-
-//	public int maxValue(int[][] grid) {
-//		int[][] dp = new int[grid.length][grid[0].length];
-//		dp[0][0] = grid[0][0];
-//		for (int i = 1; i < grid[0].length; i++) {
-//			dp[0][i] = dp[0][i - 1] + grid[0][i];
-//		}
-//		for (int i = 1; i < grid.length; i++) {
-//			dp[i][0] = dp[i - 1][0] + grid[i][0];
-//		}
-//		for (int i = 1; i < grid.length; i++) {
-//			for (int j = 1; j < grid[0].length; j++) {
-//				dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]) + grid[i][j];
-//			}
-//		}
-//		return dp[grid.length - 1][grid[0].length - 1];
-//	}
-
-	public int[] subSort(int[] nums) {
-		if (nums.length == 0) {
-			return new int[] { -1, -1 };
-		}
-		int max = nums[0];
-		int li = -1;
-		for (int i = 1; i < nums.length; i++) {
-			if (nums[i] < max) {
-				li = i;
-			} else {
-				max = nums[i];
-			}
-		}
-		if (li == -1) {
-			return new int[] { -1, -1 };
-		}
-		int min = nums[nums.length - 1];
-		int ri = -1;
-		for (int i = nums.length - 2; i >= 0; i--) {
-			if (nums[i] > min) {
-				ri = i;
-			} else {
-				min = nums[i];
-			}
-		}
-		return new int[] { ri, li };
-	}
-	
 	public int[] twoSum(int[] nums, int target) { // #1
 		Map<Integer, Integer> map = new HashMap<>();
 		for (int i = 0; i < nums.length; i++) {
@@ -191,6 +55,57 @@ public class Solutions {
 		}
 		return dummyHead.next;
 	}
+	
+//	public int lengthOfLongestSubstring(String s) {
+//	if (s == null) {
+//		return 0;
+//	}
+//	char[] chars = s.toCharArray();
+//	if (chars.length == 0) {
+//		return 0;
+//	}
+//	Map<Character, Integer> lastOccur = new HashMap<>();
+//	lastOccur.put(chars[0], 0);
+//	int li = 0; // the beginning of the substring i - 1 ends up
+//	int longest = 1;
+//	for (int i = 1; i < chars.length; i++) {
+//		//Integer pi = lastOccur.getOrDefault(chars[i], -1); // the last occurence of i character
+//		Integer pi = lastOccur.get(chars[i]);
+//		if (pi != null && li <= pi) {
+//			li = pi + 1;
+//		}
+//		lastOccur.put(chars[i], i);
+//		longest = Math.max(longest, i - li + 1);
+//	}
+//	return longest;
+//}
+public int lengthOfLongestSubstring(String s) { // #3
+	if (s == null) {
+		return 0;
+	}
+	char[] chars = s.toCharArray();
+	if (chars.length == 0) {
+		return 0;
+	}
+	int[] lastOccur = new int[128]; // only contains ascii character
+	for (int i = 0; i < lastOccur.length; i++) {
+		lastOccur[i] = -1;
+	}
+	lastOccur[chars[0]] = 0;
+	int li = 0; // the beginning of the substring i - 1 ends up
+	int longest = 1;
+	for (int i = 1; i < chars.length; i++) {
+		// Integer pi = lastOccur.getOrDefault(chars[i], -1); // the last occurence of i
+		// character
+		int pi = lastOccur[chars[i]];
+		if (li <= pi) {
+			li = pi + 1;
+		}
+		lastOccur[chars[i]] = i;
+		longest = Math.max(longest, i - li + 1);
+	}
+	return longest;
+}
 
 //	public String longestPalindrome(String s) { // #5
 //		boolean[][] dp = new boolean[s.length()][s.length()];
@@ -469,6 +384,42 @@ public class Solutions {
 		return next;
 	}
 	
+	public List<Integer> findSubstring(String s, String words[]) { // #30
+		List<Integer> results = new ArrayList<>();
+		if (words.length == 0) {
+			return results;
+		}
+		Map<String, Integer> map = new HashMap<>();
+		for (String word : words) {
+			map.put(word, map.getOrDefault(word, 0) + 1);
+		}
+		Map<String, Integer> found = new HashMap<>();
+		int n = words[0].length();
+		for (int i = 0; i <= s.length() - words.length * n; i++) {
+			int j = 0;
+			while (j < words.length) {
+				if (i + j * n + n > s.length()) {
+					break;
+				}
+				String str = s.substring(i + j * n, i + j * n + n);
+				if (map.containsKey(str)) {
+					found.put(str, found.getOrDefault(str, 0) + 1);
+				} else {
+					break;
+				}
+				if (map.get(str) < found.get(str)) {
+					break;
+				}
+				j++;
+			}
+			if (j == words.length) {
+				results.add(i);
+			}
+			found.clear();
+		}
+		return results;
+	}
+	
 	public int searchInsert(int[] nums, int target) { // #35
 		int left = 0;
 		int right = nums.length;
@@ -593,6 +544,7 @@ public class Solutions {
 			Utils.swap(nums, i, level);
 		}
 	}
+	
 	public List<List<Integer>> permuteUnique(int[] nums) { // #47
 		List<List<Integer>> solutions = new ArrayList<>();
 		if (nums.length > 0) {
@@ -617,6 +569,7 @@ public class Solutions {
 			}
 		}
 	}
+	
 	public int maxValue(int[][] grid) { // #47
 		int[] dp = new int[grid[0].length];
 		dp[0] = grid[0][0];
@@ -630,6 +583,22 @@ public class Solutions {
 		}
 		return dp[grid[0].length - 1];
 	}
+//	public int maxValue(int[][] grid) {
+//	int[][] dp = new int[grid.length][grid[0].length];
+//	dp[0][0] = grid[0][0];
+//	for (int i = 1; i < grid[0].length; i++) {
+//		dp[0][i] = dp[0][i - 1] + grid[0][i];
+//	}
+//	for (int i = 1; i < grid.length; i++) {
+//		dp[i][0] = dp[i - 1][0] + grid[i][0];
+//	}
+//	for (int i = 1; i < grid.length; i++) {
+//		for (int j = 1; j < grid[0].length; j++) {
+//			dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]) + grid[i][j];
+//		}
+//	}
+//	return dp[grid.length - 1][grid[0].length - 1];
+//}
 	
 //	public double myPow(double x, int n) { // #50
 //		if (n == 0) {
@@ -696,6 +665,18 @@ public class Solutions {
 			}
 		}
 		return true;
+	}
+	
+	public int maxSubArray(int[] nums) { // #53
+		int ans = Integer.MIN_VALUE;
+		if (nums.length > 0) {
+			int cur = -1;
+			for (int i = 0; i < nums.length; i++) {
+				cur = cur < 0 ? nums[i] : cur + nums[i];
+				ans = Math.max(ans, cur);
+			}
+		}
+		return ans;
 	}
 	
 	public int[] plusOne(int[] digits) { // #66
@@ -978,6 +959,47 @@ public class Solutions {
 		}
 		path.removeLast();
 	}
+	
+	public List<List<Integer>> generate(int numRows) { // #118
+		List<List<Integer>> solutions = new ArrayList<>();
+		if (numRows > 0) {
+			solutions.add(Arrays.asList(1));
+			if (numRows > 1) {
+				int level = 1;
+				while (level < numRows) {
+					List<Integer> cur = new ArrayList<>();
+					List<Integer> pre = solutions.get(level - 1);
+					cur.add(1);
+					for (int i = 1; i < level; i++) {
+						cur.add(pre.get(i - 1) + pre.get(i));
+					}
+					cur.add(1);
+					solutions.add(cur);
+					level++;
+				}
+			}
+		}
+		return solutions;
+	}
+	
+	public List<Integer> getRow(int rowIndex) { // #119
+		Integer[] row = new Integer[rowIndex + 1];
+		if (rowIndex >= 0) {
+			row[0] = 1;
+			if (rowIndex >= 1) {
+				int level = 1;
+				while (level <= rowIndex) {
+					for (int i = level - 1; i > 0; i--) {
+						row[i] = row[i - 1] + row[i];
+					}
+					row[level] = 1;
+					level++;
+				}
+			}
+		}
+		return Arrays.asList(row);
+	}
+	
 	public int maxProfit(int[] prices) { // #121
 		if (prices.length == 0) {
 			return 0;
@@ -992,6 +1014,11 @@ public class Solutions {
 			}
 		}
 		return maxProfit;
+	}
+	
+	public boolean isPalindrome(String s) { // #125
+		s = s.replaceAll("\\W", "");
+		return s.equalsIgnoreCase(new StringBuilder(s).reverse().toString());
 	}
 
 	public int singleNumber(int[] nums) { // #136
@@ -1282,6 +1309,20 @@ public class Solutions {
 		return 1 + getCount(root.left) + getCount(root.right);
 	}
 	
+	public void reverseString(char[] s) { // #344
+		if (s.length > 1) {
+			int l = 0;
+			int r = s.length;
+			while (l < r) {
+				char tmp = s[l];
+				s[l] = s[r - 1];
+				s[r - 1] = tmp;
+				l++;
+				r--;
+			}
+		}
+	}
+	
 	public boolean isPerfectSquare(int num) { // #367
 		int odd = 1;
 		while (num > 0) {
@@ -1383,5 +1424,34 @@ public class Solutions {
 		TreeNode(int val) {
 			this.val = val;
 		}
+	}
+	
+	// interviews
+	public int[] subSort(int[] nums) { // https://leetcode-cn.com/problems/sub-sort-lcci/
+		if (nums.length == 0) {
+			return new int[] { -1, -1 };
+		}
+		int max = nums[0];
+		int li = -1;
+		for (int i = 1; i < nums.length; i++) {
+			if (nums[i] < max) {
+				li = i;
+			} else {
+				max = nums[i];
+			}
+		}
+		if (li == -1) {
+			return new int[] { -1, -1 };
+		}
+		int min = nums[nums.length - 1];
+		int ri = -1;
+		for (int i = nums.length - 2; i >= 0; i--) {
+			if (nums[i] > min) {
+				ri = i;
+			} else {
+				min = nums[i];
+			}
+		}
+		return new int[] { ri, li };
 	}
 }
