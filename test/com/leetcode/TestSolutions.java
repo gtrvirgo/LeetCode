@@ -8,6 +8,7 @@ import com.leetcode.Solutions.TreeNode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -484,5 +485,28 @@ public class TestSolutions {
 		expecteds = new char[] { 'h', 'a', 'n', 'n', 'a', 'H' };
 		solutions.reverseString(s);
 		assertThat(s, is(expecteds));
+	}
+	@Test
+	public void testLengthOfLastWord() {
+		assertThat(solutions.lengthOfLastWord("Hello World"), is(5));
+	}
+	@Test
+	public void testLevelOrderBottom() {
+		Integer[] nums = { 3, 9, 20, null, null, 15, 7 };
+		TreeNode root = Utils.createBinaryTree(nums);
+		List<List<Integer>> expecteds = new LinkedList<>();
+		expecteds.add(Arrays.asList(15, 7));
+		expecteds.add(Arrays.asList(9, 20));
+		expecteds.add(Arrays.asList(3));
+		assertThat(solutions.levelOrderBottom(root), is(expecteds));
+	}
+	@Test
+	public void testIsSameTree() {
+		TreeNode p = Utils.createBinaryTree(new Integer[] { 1, 2, 3 });
+		TreeNode q = Utils.createBinaryTree(new Integer[] { 1, 2, 3 });
+		assertTrue(solutions.isSameTree(p, q));
+		p = Utils.createBinaryTree(new Integer[] { 1, 2 });
+		q = Utils.createBinaryTree(new Integer[] { 1, null, 2 });
+		assertFalse(solutions.isSameTree(p, q));
 	}
 }

@@ -679,6 +679,22 @@ public int lengthOfLongestSubstring(String s) { // #3
 		return ans;
 	}
 	
+	public int lengthOfLastWord(String s) { // #58
+		int length = 0;
+		if (s.length() > 0) {
+			int end = s.length() - 1;
+			while (end >= 0 && s.charAt(end) == ' ') {
+				end--;
+			}
+			int begin = end;
+			while (begin >= 0 && s.charAt(begin) != ' ') {
+				begin--;
+			}
+			length = end - begin;
+		}
+		return length;
+	}
+	
 	public int[] plusOne(int[] digits) { // #66
 		for (int i = digits.length - 1; i >= 0; i--) {
 			digits[i]++;
@@ -901,6 +917,39 @@ public int lengthOfLongestSubstring(String s) { // #3
 		prev = node;
 	}
 	
+	public boolean isSameTree(TreeNode p, TreeNode q) {
+		Queue<TreeNode> pQueue = new LinkedList<>();
+		Queue<TreeNode> qQueue = new LinkedList<>();
+		pQueue.offer(p);
+		qQueue.offer(q);
+		while (!pQueue.isEmpty()) {
+			p = pQueue.poll();
+			q = qQueue.poll();
+			if (!check(p, q)) {
+				return false;
+			}
+			if (p != null) {
+				pQueue.offer(p.left);
+				qQueue.offer(q.left);
+				pQueue.offer(p.right);
+				qQueue.offer(q.right);
+			}
+		}
+		return pQueue.size() == qQueue.size();
+	}
+	boolean check(TreeNode p, TreeNode q) {
+		if (p == null && q == null) {
+			return true;
+		}
+		if (p == null || q == null) {
+			return false;
+		}
+		if (p.val != q.val) {
+			return false;
+		}
+		return true;
+	}
+	
 	public List<List<Integer>> levelOrder(TreeNode root) { // #102
 		List<List<Integer>> solutions = new ArrayList<>();
 		if (root != null) {
@@ -922,6 +971,33 @@ public int lengthOfLongestSubstring(String s) { // #3
 					count = queue.size();
 					solutions.add(new ArrayList<>(solution));
 					solution.clear();
+				}
+			}
+		}
+		return solutions;
+	}
+	
+	public List<List<Integer>> levelOrderBottom(TreeNode root) { // #107
+		LinkedList<List<Integer>> solutions = new LinkedList<>();
+		if (root != null) {
+			Queue<TreeNode> queue = new LinkedList<>();
+			List<Integer> l = new ArrayList<>();
+			queue.offer(root);
+			int count = queue.size();
+			while (!queue.isEmpty()) {
+				TreeNode node = queue.poll();
+				count--;
+				l.add(node.val);
+				if (node.left != null) {
+					queue.offer(node.left);
+				}
+				if (node.right != null) {
+					queue.offer(node.right);
+				}
+				if (count == 0) {
+					count = queue.size();
+					solutions.addFirst(new ArrayList<>(l));
+					l.clear();
 				}
 			}
 		}
