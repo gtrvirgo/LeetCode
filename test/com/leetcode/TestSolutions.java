@@ -232,6 +232,15 @@ public class TestSolutions {
 		assertThat(solutions.maxProfit(prices), is(0));
 	}
 	@Test
+	public void testMaxProfitII() {
+		int[] prices = { 7, 1, 5, 3, 6, 4 };
+		assertThat(solutions.maxProfitII(prices), is(7));
+		prices = new int[] { 1, 2, 3, 4, 5 };
+		assertThat(solutions.maxProfitII(prices), is(4));
+		prices = new int[] { 7, 6, 4, 3, 1 };
+		assertThat(solutions.maxProfitII(prices), is(0));
+	}
+	@Test
 	public void testMinDistance() {
 		assertThat(solutions.minDistance("horse", "ros"), is(3));
 		assertThat(solutions.minDistance("intention", "execution"), is(5));

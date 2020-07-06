@@ -1092,6 +1092,17 @@ public int lengthOfLongestSubstring(String s) { // #3
 		return maxProfit;
 	}
 	
+	public int maxProfitII(int[] prices) { // #122
+		int profits = 0;
+		for (int i = 1; i < prices.length; i++) {
+			int tmp = prices[i] - prices[i - 1];
+			if (tmp > 0) {
+				profits += tmp;
+			}
+		}
+		return profits;
+	}
+	
 	public boolean isPalindrome(String s) { // #125
 		s = s.replaceAll("\\W", "");
 		return s.equalsIgnoreCase(new StringBuilder(s).reverse().toString());
