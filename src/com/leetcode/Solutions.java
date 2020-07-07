@@ -630,12 +630,12 @@ public int lengthOfLongestSubstring(String s) { // #3
 		return solutions;
 	}
 
-	void helper(List<List<String>> solutions, int[] board, int n) {
-		if (n == board.length) {
+	void helper(List<List<String>> solutions, int[] board, int row) {
+		if (row == board.length) {
 			List<String> solution = new ArrayList<>();
-			for (int i = 0; i < n; i++) {
+			for (int i = 0; i < row; i++) {
 				StringBuilder sb = new StringBuilder();
-				for (int j = 0; j < n; j++) {
+				for (int j = 0; j < row; j++) {
 					if (j == board[i]) {
 						sb.append("Q");
 					} else {
@@ -647,10 +647,10 @@ public int lengthOfLongestSubstring(String s) { // #3
 			solutions.add(solution);
 			return;
 		}
-		for (int i = 0; i < board.length; i++) {
-			if (canPlace(n, i, board)) {
-				board[n] = i;
-				helper(solutions, board, n + 1);
+		for (int col = 0; col < board.length; col++) {
+			if (canPlace(row, col, board)) {
+				board[row] = col;
+				helper(solutions, board, row + 1);
 			}
 		}
 	}
@@ -1124,6 +1124,65 @@ public int lengthOfLongestSubstring(String s) { // #3
 			twice = twice ^ num & ~once;
 		}
 		return once;
+	}
+	
+	public static class LRUCache { // #146
+		int capacity;
+		Map<Integer, Node> map;
+		Node head;
+		Node tail;
+		public LRUCache(int capacity) {
+			this.capacity = capacity;
+			map = new HashMap<>();
+			head = new Node();
+			tail = new Node();
+			head.next = tail;
+			tail.previous = head;
+		}
+		public int get(int key) {
+			Node node = map.get(key);
+			if (node == null) {
+				return -1;
+			}
+			remove(node);
+			insertHead(node);
+			return node.value;
+		}
+		public void put(int key, int value) {
+			Node node = map.get(key);
+			if (node != null) {
+				node.value = value;
+				remove(node);
+			} else {
+				node = new Node(key, value);
+				if (map.size() == capacity) {
+					remove(map.remove(tail.previous.key));
+				}
+				map.put(key, node);
+			}
+			insertHead(node); // make this node hot :)
+		}
+		void remove(Node node) {
+			node.previous.next = node.next;
+			node.next.previous = node.previous;
+		}
+		void insertHead(Node node) {
+			node.next = head.next;
+			head.next.previous = node;
+			node.previous = head;
+			head.next = node;
+		}
+		public static class Node {
+			int key;
+			int value;
+			Node next;
+			Node previous;
+			Node(int key, int value) {
+				this.key = key;
+				this.value = value;
+			}
+			Node() {}
+		}
 	}
 
 	public String reverseWords(String s) { // #151
