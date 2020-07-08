@@ -629,7 +629,6 @@ public int lengthOfLongestSubstring(String s) { // #3
 		helper(solutions, board, 0);
 		return solutions;
 	}
-
 	void helper(List<List<String>> solutions, int[] board, int row) {
 		if (row == board.length) {
 			List<String> solution = new ArrayList<>();
@@ -654,7 +653,6 @@ public int lengthOfLongestSubstring(String s) { // #3
 			}
 		}
 	}
-
 	boolean canPlace(int row, int col, int[] board) {
 		for (int i = 0; i < row; i++) {
 			if (board[i] == col) {
@@ -666,6 +664,24 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return true;
 	}
+	
+	int solutions = 0;
+	public int totalNQueens(int n) { // #52
+        DFS(n, 0, 0, 0, 0);
+        return solutions;
+    }
+    void DFS(int n, long rows, long hills, long dales, int row) {
+        if (row == n) {
+            solutions++;
+            return;
+        }
+        long vacant = ((1L << n) - 1) & ~(rows | hills | dales);
+        while (vacant != 0) {
+            long pick = vacant & -vacant;
+            vacant ^= pick;
+            DFS(n, rows ^ pick, (hills ^ pick) >> 1, (dales ^ pick) << 1, row + 1);
+        }
+    }
 	
 	public int maxSubArray(int[] nums) { // #53
 		int ans = Integer.MIN_VALUE;
