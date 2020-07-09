@@ -169,6 +169,30 @@ public int lengthOfLongestSubstring(String s) { // #3
 		return ans;
 	}
 	
+	public String convert(String s, int numRows) { // #6
+		if (numRows == 1) {
+			return s;
+		}
+		List<StringBuilder> rows = new ArrayList<>();
+		for (int i = 0; i < Math.min(numRows, s.length()); i++) {
+			rows.add(new StringBuilder());
+		}
+		int curRow = 0;
+		boolean goingDown = false;
+		for (int i = 0; i < s.length(); i++) {
+			rows.get(curRow).append(s.charAt(i));
+			if (curRow == 0 || curRow == numRows - 1) {
+				goingDown = !goingDown;
+			}
+			curRow += goingDown ? 1 : -1;
+		}
+		StringBuilder ans = new StringBuilder();
+		for (StringBuilder row : rows) {
+			ans.append(row);
+		}
+		return ans.toString();
+	}
+	
 	public int reverse(int x) { // #7
 		int rev = 0;
 		int pop = 0;
@@ -196,6 +220,28 @@ public int lengthOfLongestSubstring(String s) { // #3
 			x /= 10;
 		}
 		return x == halfX || x == halfX / 10;
+	}
+	
+	public int maxArea(int[] height) { // #11
+		int left = 0;
+		int right = height.length - 1;
+		int max = 0;
+		while (left < right) {
+			if (height[left] < height[right]) {
+				int shorter = height[left];
+				max = Math.max(max, (right - left) * shorter);
+				while (left < right && height[left] <= shorter) {
+					left++;
+				}
+			} else {
+				int shorter = height[right];
+				max = Math.max(max, (right - left) * shorter);
+				while (left < right && height[right] <= shorter) {
+					right--;
+				}
+			}
+		}
+		return max;
 	}
 	
 	public String longestCommonPrefix(String[] strs) { // #14
@@ -1394,6 +1440,59 @@ public int lengthOfLongestSubstring(String s) { // #3
 			}
 		}
 		return true;
+	}
+	
+	public boolean canAttendMeetings(int[][] intervals) { // #252
+//		intervals = {
+//				{5, 15}, meeting 1, starts 5 ends 15 
+//				{25, 40} meeting 2, starts 25 ends 40
+//		};
+		if (intervals.length > 0) {
+			Arrays.sort(intervals, (meeting1, meeting2) -> meeting1[0] - meeting2[0]);
+			for (int i = 1; i < intervals.length; i++) {
+				if (intervals[i][0] < intervals[i - 1][1]) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	
+//	public int minMeetingRooms(int[][] intervals) { // #253
+//		PriorityQueue<Integer> convenings = new PriorityQueue<>();
+//		if (intervals.length > 0) {
+//			Arrays.sort(intervals, (meeting1, meeting2) -> meeting1[0] - meeting2[0]);
+//			for (int[] meeting : intervals) {
+//				if (!convenings.isEmpty() && meeting[0] >= convenings.peek()) {
+//					convenings.remove();
+//				}
+//				convenings.add(meeting[1]);
+//			}
+//		}
+//		return convenings.size();
+//	}
+	
+	public int minMeetingRooms(int[][] intervals) {
+		int rooms = 0;
+		if (intervals.length > 0) {
+			int[] starts = new int[intervals.length];
+			int[] ends = new int[intervals.length];
+			for (int i = 0; i < intervals.length; i++) {
+				starts[i] = intervals[i][0];
+				ends[i] = intervals[i][1];
+			}
+			Arrays.sort(starts);
+			Arrays.sort(ends);
+			int ending = 0;
+			for (int start : starts) {
+				if (start < ends[ending]) {
+					rooms++;
+				} else {
+					ending++;
+				}
+			}
+		}
+		return rooms;
 	}
 
 	public void moveZeroes(int nums[]) { // #283

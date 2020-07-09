@@ -35,6 +35,12 @@ public class TestSolutions {
 		String s = "race a car";
 		assertFalse(solutions.isPalindrome(s));
 	}
+	
+	@Test
+	public void TestConvert() {
+		assertThat(solutions.convert("PAYPALISHIRING", 3), is("PAHNAPLSIIGYIR"));
+		assertThat(solutions.convert("PAYPALISHIRING", 4), is("PINALSIGYAHRPI"));
+	}
 
 	@Test
 	public void TestSingleNumber() {
@@ -530,5 +536,21 @@ public class TestSolutions {
 		assertThat(cache.get(1), is(-1));       // returns -1 (not found)
 		assertThat(cache.get(3), is(3));       // returns 3
 		assertThat(cache.get(4), is(4));       // returns 4
+	}
+	@Test
+	public void testMinMeetingRooms() {
+		int[][] intervals = {
+				{ 0, 6 },
+				{ 4, 14 },
+				{ 8, 24 },
+				{ 16, 22 },
+				{ 20, 26 }
+		};
+		assertThat(solutions.minMeetingRooms(intervals), is(3));
+	}
+	@Test
+	public void testMaxArea() {
+		int[] height = { 1, 8, 6, 2, 5, 4, 8, 3, 7 };
+		assertThat(solutions.maxArea(height), is(49));
 	}
 }
