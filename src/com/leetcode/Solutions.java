@@ -210,6 +210,63 @@ public int lengthOfLongestSubstring(String s) { // #3
 		return rev;
 	}
 	
+	static final int START = 0;
+	static final int SIGNED = 1;
+	static final int NUMBER = 2;
+	static final int ERR = 3;
+	
+	static final int WHITE_SPACE = 0;
+	static final int SIGN = 1;
+	static final int NUMBER_OR_ID = 2;
+	static final int UNKNOWN = 3;
+	
+	int state;
+	int sign;
+	long value;
+	
+	int[][] machine = {
+			{START, SIGNED, NUMBER, ERR},
+			{ERR, ERR, NUMBER, ERR},
+			{ERR, ERR, NUMBER, ERR},
+			{ERR, ERR, ERR, ERR}
+	};
+	public int myAtoi(String str) { // #8
+		state = 0;
+		sign = 1;
+		value = 0;
+		int i = 0;
+		while (i < str.length() && parse(str.charAt(i))) {
+			i++;
+		}
+		return (int) (value * sign);
+	}
+	boolean parse(char c) {
+		state = machine[state][lex(c)];
+		if (state == ERR) {
+			return false;
+		}
+		if (state == SIGNED) {
+			sign = c == '-' ? -1 : 1;
+		} else if (state == NUMBER) {
+			value = value * 10 + (c - '0');
+			value = sign > 0 ? Math.min(Integer.MAX_VALUE, value) :
+				Math.min(-1 * (long) Integer.MIN_VALUE, value);
+		}
+		return true;
+	}
+	int lex(char c) {
+		if (' ' == c) {
+			return WHITE_SPACE;
+		}
+		if (Character.isDigit(c)) {
+			return NUMBER_OR_ID;
+		}
+		if ('-' == c || '+' == c) {
+			return SIGN;
+		}
+		return UNKNOWN;
+	}
+	
 	public boolean isPalindrome(int x) { // #9
 		if (x < 0 || (x % 10 == 0 && x != 0)) {
 			return false;

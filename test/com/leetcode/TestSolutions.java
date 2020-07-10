@@ -564,4 +564,13 @@ public class TestSolutions {
 		int[] height = { 0,1,0,2,1,0,1,3,2,1,2,1 };
 		assertThat(solutions.trap(height), is(6));
 	}
+	@Test
+	public void testMyAtoi() {
+		assertThat(solutions.myAtoi("+1"), is(1));
+		assertThat(solutions.myAtoi("42"), is(42));
+		assertThat(solutions.myAtoi("   -42"), is(-42));
+		assertThat(solutions.myAtoi("4193 with words"), is(4193));
+		assertThat(solutions.myAtoi("words and 987"), is(0));
+		assertThat(solutions.myAtoi("-91283472332"), is(-2147483648));
+	}
 }
