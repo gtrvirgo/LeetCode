@@ -235,16 +235,14 @@ public int lengthOfLongestSubstring(String s) { // #3
 		sign = 1;
 		value = 0;
 		int i = 0;
-		while (i < str.length() && parse(str.charAt(i))) {
+		while (i < str.length()) {
+			parse(str.charAt(i));
 			i++;
 		}
 		return (int) (value * sign);
 	}
-	boolean parse(char c) {
+	void parse(char c) {
 		state = machine[state][lex(c)];
-		if (state == ERR) {
-			return false;
-		}
 		if (state == SIGNED) {
 			sign = c == '-' ? -1 : 1;
 		} else if (state == NUMBER) {
@@ -252,7 +250,6 @@ public int lengthOfLongestSubstring(String s) { // #3
 			value = sign > 0 ? Math.min(Integer.MAX_VALUE, value) :
 				Math.min(-1 * (long) Integer.MIN_VALUE, value);
 		}
-		return true;
 	}
 	int lex(char c) {
 		if (' ' == c) {
