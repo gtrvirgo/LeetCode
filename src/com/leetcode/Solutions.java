@@ -568,6 +568,38 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 	}
 	
+//	public int trap(int[] height) { // #42
+//		int[] left = new int[height.length];
+//		int[] right = new int[height.length];
+//		for (int i = 1; i < height.length - 1; i++) {
+//			left[i] = Math.max(left[i - 1], height[i - 1]);
+//		}
+//		for (int i = height.length - 2; i > 0; i--) {
+//			right[i] = Math.max(right[i + 1], height[i + 1]);
+//		}
+//		int water = 0;
+//		for (int i = 1; i < height.length - 1; i++) {
+//			int lower = Math.min(left[i], right[i]);
+//			if (lower <= height[i]) {
+//				continue;
+//			}
+//			water += lower - height[i];
+//		}
+//		return water;
+//	}
+	public int trap(int[] height) {
+		int left = 0;
+		int right = height.length - 1;
+		int maxLower = 0;
+		int water = 0;
+		while (left < right) {
+			int lower = height[height[left] < height[right] ? left++ : right--];
+			maxLower = Math.max(maxLower, lower);
+			water += maxLower - lower;
+		}
+		return water;
+	}
+	
 	public List<List<Integer>> permute(int[] nums) { // #46
 		List<List<Integer>> solutions = new ArrayList<>();
 		if (nums.length > 0) {
@@ -616,36 +648,6 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 	}
 	
-	public int maxValue(int[][] grid) { // #47
-		int[] dp = new int[grid[0].length];
-		dp[0] = grid[0][0];
-		for (int i = 1; i < dp.length; i++) {
-			dp[i] = dp[i - 1] + grid[0][i];
-		}
-		for (int i = 1; i < grid.length; i++) {
-			for (int j = 1; j < grid[0].length; j++) {
-				dp[j] = Math.max(dp[j - 1], dp[j]) + grid[i][j];
-			}
-		}
-		return dp[grid[0].length - 1];
-	}
-//	public int maxValue(int[][] grid) {
-//	int[][] dp = new int[grid.length][grid[0].length];
-//	dp[0][0] = grid[0][0];
-//	for (int i = 1; i < grid[0].length; i++) {
-//		dp[0][i] = dp[0][i - 1] + grid[0][i];
-//	}
-//	for (int i = 1; i < grid.length; i++) {
-//		dp[i][0] = dp[i - 1][0] + grid[i][0];
-//	}
-//	for (int i = 1; i < grid.length; i++) {
-//		for (int j = 1; j < grid[0].length; j++) {
-//			dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]) + grid[i][j];
-//		}
-//	}
-//	return dp[grid.length - 1][grid[0].length - 1];
-//}
-	
 //	public double myPow(double x, int n) { // #50
 //		if (n == 0) {
 //			return 1;
@@ -656,7 +658,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 //		x = n > 0 ? x : 1 / x;
 //		return isOdd ? half * x : half;
 //	}
-	public double myPow(double x, int n) {
+	public double myPow(double x, int n) { // #50
 		long exp = n > 0 ? n : -1 * (long) n;
 		double ans = 1.0;
 		while (exp != 0) {
@@ -1687,8 +1689,12 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 	}
 	
-	// interviews
-	public int[] subSort(int[] nums) { // https://leetcode-cn.com/problems/sub-sort-lcci/
+	// Interviews
+	
+	/*
+	 * https://leetcode-cn.com/problems/sub-sort-lcci/
+	 */
+	public int[] subSort(int[] nums) {
 		if (nums.length == 0) {
 			return new int[] { -1, -1 };
 		}
@@ -1715,4 +1721,38 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return new int[] { ri, li };
 	}
+	
+	/*
+	 * https://leetcode-cn.com/problems/li-wu-de-zui-da-jie-zhi-lcof/
+	 */
+	public int maxValue(int[][] grid) {
+		int[] dp = new int[grid[0].length];
+		dp[0] = grid[0][0];
+		for (int i = 1; i < dp.length; i++) {
+			dp[i] = dp[i - 1] + grid[0][i];
+		}
+		for (int i = 1; i < grid.length; i++) {
+			dp[0] += grid[i][0];
+			for (int j = 1; j < grid[0].length; j++) {
+				dp[j] = Math.max(dp[j - 1], dp[j]) + grid[i][j];
+			}
+		}
+		return dp[dp.length - 1];
+	}
+//	public int maxValue(int[][] grid) {
+//	int[][] dp = new int[grid.length][grid[0].length];
+//	dp[0][0] = grid[0][0];
+//	for (int i = 1; i < grid[0].length; i++) {
+//		dp[0][i] = dp[0][i - 1] + grid[0][i];
+//	}
+//	for (int i = 1; i < grid.length; i++) {
+//		dp[i][0] = dp[i - 1][0] + grid[i][0];
+//	}
+//	for (int i = 1; i < grid.length; i++) {
+//		for (int j = 1; j < grid[0].length; j++) {
+//			dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]) + grid[i][j];
+//		}
+//	}
+//	return dp[grid.length - 1][grid[0].length - 1];
+//}
 }

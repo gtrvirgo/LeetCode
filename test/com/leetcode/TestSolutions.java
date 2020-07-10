@@ -113,6 +113,12 @@ public class TestSolutions {
 				{ 3, 2, 6, 5 }
 		};
 		assertThat(solutions.maxValue(grid), is(24));
+		grid = new int[][] {
+			{1,2},
+			{5,6},
+			{1,1}
+		};
+		assertThat(solutions.maxValue(grid), is(13));
 	}
 	@Test
 	public void testMerge() {
@@ -552,5 +558,10 @@ public class TestSolutions {
 	public void testMaxArea() {
 		int[] height = { 1, 8, 6, 2, 5, 4, 8, 3, 7 };
 		assertThat(solutions.maxArea(height), is(49));
+	}
+	@Test
+	public void testTrap() {
+		int[] height = { 0,1,0,2,1,0,1,3,2,1,2,1 };
+		assertThat(solutions.trap(height), is(6));
 	}
 }
