@@ -573,4 +573,25 @@ public class TestSolutions {
 		assertThat(solutions.myAtoi("words and 987"), is(0));
 		assertThat(solutions.myAtoi("-91283472332"), is(-2147483648));
 	}
+	@Test
+	public void testIsPathCrossing() {
+		assertFalse(solutions.isPathCrossing("NES"));
+		assertTrue(solutions.isPathCrossing("NESWW"));
+	}
+	@Test
+	public void testRomanToInt() {
+		assertThat(solutions.romanToInt("III"), is(3));
+		assertThat(solutions.romanToInt("IV"), is(4));
+		assertThat(solutions.romanToInt("IX"), is(9));
+		assertThat(solutions.romanToInt("LVIII"), is(58));
+		assertThat(solutions.romanToInt("MCMXCIV"), is(1994));
+	}
+	@Test
+	public void testIntToRoman() {
+		assertThat(solutions.intToRoman(3), is("III"));
+		assertThat(solutions.intToRoman(4), is("IV"));
+		assertThat(solutions.intToRoman(9), is("IX"));
+		assertThat(solutions.intToRoman(58), is("LVIII"));
+		assertThat(solutions.intToRoman(1994), is("MCMXCIV"));
+	}
 }

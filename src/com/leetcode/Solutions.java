@@ -2,13 +2,14 @@ package com.leetcode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Deque;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Stack;
-import java.util.LinkedList;
-import java.util.Deque;
 
 public class Solutions {
 
@@ -298,6 +299,46 @@ public int lengthOfLongestSubstring(String s) { // #3
 		return max;
 	}
 	
+	public String intToRoman(int num) { // #12
+		String[] romans = { "M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I" };
+		int[] ints = { 1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1 };
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < romans.length && num >= 0; i++) {
+			while (num >= ints[i]) {
+				num -= ints[i];
+				sb.append(romans[i]);
+			}
+		}
+		return sb.toString();
+	}
+	
+	public int romanToInt(String s) { // #13
+		int sum = 0;
+		int previous = helper(s.charAt(0));
+		for (int i = 1; i < s.length(); i++) {
+			int cur = helper(s.charAt(i));
+			if (previous < cur) {
+				sum -= previous;
+			} else {
+				sum += previous;
+			}
+			previous = cur;
+		}
+		sum += previous;
+		return sum;
+	}
+	int helper(char ch) {
+		switch (ch) {
+		case 'I': return 1;
+		case 'V': return 5;
+		case 'X': return 10;
+		case 'L': return 50;
+		case 'C': return 100;
+		case 'D': return 500;
+		case 'M': return 1000;
+		default: return 0;
+		}
+	}
 	public String longestCommonPrefix(String[] strs) { // #14
 		if (strs.length == 0 || strs == null) {
 			return "";
@@ -1722,6 +1763,35 @@ public int lengthOfLongestSubstring(String s) { // #3
 			}
 		}
 		return dp[text2.length()];
+	}
+	
+	public boolean isPathCrossing(String path) { // #1496
+		HashSet<String> set = new HashSet<>();
+		int x = 0, y = 0;
+		set.add(x + " " + y);
+		char[] chs = path.toCharArray();
+		for (char ch : chs) {
+			switch (ch) {
+			case 'N':
+				x--;
+				break;
+			case 'S':
+				x++;
+				break;
+			case 'W':
+				y--;
+				break;
+			case 'E':
+				y++;
+				break;
+			}
+			String point = x + " " + y;
+			if (set.contains(point)) {
+				return true;
+			}
+			set.add(point);
+		}
+		return false;
 	}
 
 	static class ListNode {
