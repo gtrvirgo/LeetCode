@@ -636,4 +636,9 @@ public class TestSolutions {
 		solutions.nextPermutation(nums);
 		assertThat(nums, is(new int[] { 2, 1 }));
 	}
+	@Test
+	public void testLongestValidParentheses() {
+		assertThat(solutions.longestValidParentheses("(()"), is(2));
+		assertThat(solutions.longestValidParentheses(")()())"), is(4));
+	}
 }

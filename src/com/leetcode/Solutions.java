@@ -723,6 +723,25 @@ public class Solutions {
 			solution.removeLast();
 		}
 	}
+	
+	public int longestValidParentheses(String s) { // #41
+		Stack<Integer> stack = new Stack<>();
+		int len = 0;
+		stack.push(-1);
+		for (int i = 0; i < s.length(); i++) {
+			if (s.charAt(i) == '(') {
+				stack.push(i);
+			} else {
+				stack.pop();
+				if (stack.isEmpty()) {
+					stack.push(i);
+				} else {
+					len = Math.max(len, i - stack.peek());
+				}
+			}
+		}
+		return len;
+	}
 
 //	public int trap(int[] height) { // #42
 //		int[] left = new int[height.length];
