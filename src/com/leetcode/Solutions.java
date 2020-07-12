@@ -24,7 +24,7 @@ public class Solutions {
 		}
 		return new int[] {};
 	}
-	
+
 	public ListNode addTwoNumbers(ListNode l1, ListNode l2) { // #2
 		if (l1 == null) {
 			return l2;
@@ -56,7 +56,7 @@ public class Solutions {
 		}
 		return dummyHead.next;
 	}
-	
+
 //	public int lengthOfLongestSubstring(String s) {
 //	if (s == null) {
 //		return 0;
@@ -80,33 +80,33 @@ public class Solutions {
 //	}
 //	return longest;
 //}
-public int lengthOfLongestSubstring(String s) { // #3
-	if (s == null) {
-		return 0;
-	}
-	char[] chars = s.toCharArray();
-	if (chars.length == 0) {
-		return 0;
-	}
-	int[] lastOccur = new int[128]; // only contains ascii character
-	for (int i = 0; i < lastOccur.length; i++) {
-		lastOccur[i] = -1;
-	}
-	lastOccur[chars[0]] = 0;
-	int li = 0; // the beginning of the substring i - 1 ends up
-	int longest = 1;
-	for (int i = 1; i < chars.length; i++) {
-		// Integer pi = lastOccur.getOrDefault(chars[i], -1); // the last occurence of i
-		// character
-		int pi = lastOccur[chars[i]];
-		if (li <= pi) {
-			li = pi + 1;
+	public int lengthOfLongestSubstring(String s) { // #3
+		if (s == null) {
+			return 0;
 		}
-		lastOccur[chars[i]] = i;
-		longest = Math.max(longest, i - li + 1);
+		char[] chars = s.toCharArray();
+		if (chars.length == 0) {
+			return 0;
+		}
+		int[] lastOccur = new int[128]; // only contains ascii character
+		for (int i = 0; i < lastOccur.length; i++) {
+			lastOccur[i] = -1;
+		}
+		lastOccur[chars[0]] = 0;
+		int li = 0; // the beginning of the substring i - 1 ends up
+		int longest = 1;
+		for (int i = 1; i < chars.length; i++) {
+			// Integer pi = lastOccur.getOrDefault(chars[i], -1); // the last occurence of i
+			// character
+			int pi = lastOccur[chars[i]];
+			if (li <= pi) {
+				li = pi + 1;
+			}
+			lastOccur[chars[i]] = i;
+			longest = Math.max(longest, i - li + 1);
+		}
+		return longest;
 	}
-	return longest;
-}
 
 //	public String longestPalindrome(String s) { // #5
 //		boolean[][] dp = new boolean[s.length()][s.length()];
@@ -158,6 +158,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 		int begin = (tBegin - maxLen) / 2;
 		return s.substring(begin, begin + maxLen);
 	}
+
 	char[] helper(char[] chars) {
 		char[] ans = new char[chars.length * 2 + 3];
 		ans[0] = '^';
@@ -169,7 +170,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return ans;
 	}
-	
+
 	public String convert(String s, int numRows) { // #6
 		if (numRows == 1) {
 			return s;
@@ -193,7 +194,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return ans.toString();
 	}
-	
+
 	public int reverse(int x) { // #7
 		int rev = 0;
 		int pop = 0;
@@ -210,27 +211,24 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return rev;
 	}
-	
+
 	static final int START = 0;
 	static final int SIGNED = 1;
 	static final int NUMBER = 2;
 	static final int ERR = 3;
-	
+
 	static final int WHITE_SPACE = 0;
 	static final int SIGN = 1;
 	static final int NUMBER_OR_ID = 2;
 	static final int UNKNOWN = 3;
-	
+
 	int state;
 	int sign;
 	long value;
-	
-	int[][] machine = {
-			{START, SIGNED, NUMBER, ERR},
-			{ERR, ERR, NUMBER, ERR},
-			{ERR, ERR, NUMBER, ERR},
-			{ERR, ERR, ERR, ERR}
-	};
+
+	int[][] machine = { { START, SIGNED, NUMBER, ERR }, { ERR, ERR, NUMBER, ERR }, { ERR, ERR, NUMBER, ERR },
+			{ ERR, ERR, ERR, ERR } };
+
 	public int myAtoi(String str) { // #8
 		state = 0;
 		sign = 1;
@@ -242,16 +240,17 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return (int) (value * sign);
 	}
+
 	void parse(char c) {
 		state = machine[state][lex(c)];
 		if (state == SIGNED) {
 			sign = c == '-' ? -1 : 1;
 		} else if (state == NUMBER) {
 			value = value * 10 + (c - '0');
-			value = sign > 0 ? Math.min(Integer.MAX_VALUE, value) :
-				Math.min(-1 * (long) Integer.MIN_VALUE, value);
+			value = sign > 0 ? Math.min(Integer.MAX_VALUE, value) : Math.min(-1 * (long) Integer.MIN_VALUE, value);
 		}
 	}
+
 	int lex(char c) {
 		if (' ' == c) {
 			return WHITE_SPACE;
@@ -264,7 +263,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return UNKNOWN;
 	}
-	
+
 	public boolean isPalindrome(int x) { // #9
 		if (x < 0 || (x % 10 == 0 && x != 0)) {
 			return false;
@@ -276,7 +275,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return x == halfX || x == halfX / 10;
 	}
-	
+
 	public int maxArea(int[] height) { // #11
 		int left = 0;
 		int right = height.length - 1;
@@ -298,7 +297,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return max;
 	}
-	
+
 	public String intToRoman(int num) { // #12
 		String[] romans = { "M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I" };
 		int[] ints = { 1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1 };
@@ -311,7 +310,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return sb.toString();
 	}
-	
+
 	public int romanToInt(String s) { // #13
 		int sum = 0;
 		int previous = helper(s.charAt(0));
@@ -327,18 +326,28 @@ public int lengthOfLongestSubstring(String s) { // #3
 		sum += previous;
 		return sum;
 	}
+
 	int helper(char ch) {
 		switch (ch) {
-		case 'I': return 1;
-		case 'V': return 5;
-		case 'X': return 10;
-		case 'L': return 50;
-		case 'C': return 100;
-		case 'D': return 500;
-		case 'M': return 1000;
-		default: return 0;
+		case 'I':
+			return 1;
+		case 'V':
+			return 5;
+		case 'X':
+			return 10;
+		case 'L':
+			return 50;
+		case 'C':
+			return 100;
+		case 'D':
+			return 500;
+		case 'M':
+			return 1000;
+		default:
+			return 0;
 		}
 	}
+
 	public String longestCommonPrefix(String[] strs) { // #14
 		if (strs.length == 0 || strs == null) {
 			return "";
@@ -352,6 +361,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return prefix;
 	}
+
 	String updatePrefix(String prefix, String str2) {
 		int len = Math.min(prefix.length(), str2.length());
 		int i = 0;
@@ -363,7 +373,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return prefix.substring(0, i);
 	}
-	
+
 	public List<List<Integer>> threeSum(int[] nums) { // #15
 		List<List<Integer>> solutions = new ArrayList<>();
 		if (nums.length > 2) {
@@ -383,7 +393,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 						solutions.add(Arrays.asList(nums[i], nums[left], nums[right]));
 						while (left < right && nums[right] == nums[right - 1]) {
 							right--;
-						} 
+						}
 						while (left < right && nums[left] == nums[left + 1]) {
 							left++;
 						}
@@ -395,17 +405,16 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return solutions;
 	}
-	
-	char[][] dialer = {
-			{ 'a', 'b', 'c' }, { 'd', 'e', 'f' }, { 'g', 'h', 'i' },
-			{ 'j', 'k', 'l' }, { 'm', 'n', 'o' }, { 'p', 'q', 'r', 's' },
-			{ 't', 'u', 'v' }, { 'w', 'x', 'y', 'z' }
-	};
+
+	char[][] dialer = { { 'a', 'b', 'c' }, { 'd', 'e', 'f' }, { 'g', 'h', 'i' }, { 'j', 'k', 'l' }, { 'm', 'n', 'o' },
+			{ 'p', 'q', 'r', 's' }, { 't', 'u', 'v' }, { 'w', 'x', 'y', 'z' } };
+
 	public List<String> letterCombinations(String digits) { // #17
 		List<String> combinations = new ArrayList<>();
 		helper(combinations, digits, new char[digits.length()], 0);
 		return combinations;
 	}
+
 	void helper(List<String> combinations, String digits, char[] combination, int level) {
 		if (level == digits.length()) {
 			combinations.add(new String(combination));
@@ -416,7 +425,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 			helper(combinations, digits, combination, level + 1);
 		}
 	}
-	
+
 	public boolean isValid(String s) { // #20
 		Stack<Character> stack = new Stack<>();
 		Map<Character, Character> map = new HashMap<>();
@@ -441,6 +450,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return stack.isEmpty();
 	}
+
 	public List<String> generateParenthesis(int n) { // #22
 		List<String> solutions = new ArrayList<>();
 		if (n >= 0) {
@@ -448,6 +458,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return solutions;
 	}
+
 	void helper(int left, int right, List<String> solutions, char[] solution) {
 		if (left == 0 && right == 0) {
 			solutions.add(new String(solution));
@@ -472,7 +483,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return i + 1;
 	}
-	
+
 	public int removeElement(int[] nums, int val) { // #27
 		int cur = 0;
 		for (int i = 0; i < nums.length; i++) {
@@ -486,7 +497,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return cur;
 	}
-	
+
 	public int strStr(String haystack, String needle) { // #28
 		if (needle.length() == 0) {
 			return 0;
@@ -507,7 +518,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return -1;
 	}
-	
+
 	int[] getNext(String needle) {
 		int[] next = new int[needle.length()];
 		next[0] = -1;
@@ -524,7 +535,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return next;
 	}
-	
+
 	public List<Integer> findSubstring(String s, String words[]) { // #30
 		List<Integer> results = new ArrayList<>();
 		if (words.length == 0) {
@@ -560,7 +571,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return results;
 	}
-	
+
 	public int searchInsert(int[] nums, int target) { // #35
 		int left = 0;
 		int right = nums.length;
@@ -576,7 +587,34 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return left;
 	}
-	
+
+	public boolean isValidSudoku(char[][] board) { // #36
+		List<Map<Integer, Integer>> rows = new ArrayList<>(9);
+		List<Map<Integer, Integer>> cols = new ArrayList<>(9);
+		List<Map<Integer, Integer>> boxes = new ArrayList<>(9);
+		for (int i = 0; i < 9; i++) {
+			rows.add(new HashMap<Integer, Integer>());
+			cols.add(new HashMap<Integer, Integer>());
+			boxes.add(new HashMap<Integer, Integer>());
+		}
+		for (int row = 0; row < board.length; row++) {
+			for (int col = 0; col < board[0].length; col++) {
+				if (board[row][col] == '.') {
+					continue;
+				}
+				int n = (int) board[row][col];
+				int boxIndex = (row / 3) * 3 + col / 3;
+				rows.get(row).put(n, rows.get(row).getOrDefault(n, 0) + 1);
+				cols.get(col).put(n, cols.get(row).getOrDefault(n, 0) + 1);
+				boxes.get(boxIndex).put(n, boxes.get(boxIndex).getOrDefault(n, 0) + 1);
+				if (rows.get(row).get(n) > 1 || cols.get(col).get(n) > 1 || boxes.get(boxIndex).get(n) > 1) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
 //	public String countAndSay(int n) { // #38
 //		if (n == 1) {
 //			return "1";
@@ -594,7 +632,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 //		}
 //		return sb.toString();
 //	}
-	
+
 	public String countAndSay(int n) { // #38
 		String previous = "1";
 		while (n > 1) {
@@ -613,15 +651,15 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return previous;
 	}
-	
+
 	public List<List<Integer>> combinationSum(int[] candidates, int target) { // #39
 		List<List<Integer>> solutions = new ArrayList<>();
 		Arrays.sort(candidates);
 		helper(candidates, target, 0, new LinkedList<Integer>(), solutions);
 		return solutions;
 	}
-	void helper(int[] candidates, int remain, int begin,
-			LinkedList<Integer> solution, List<List<Integer>> solutions) {
+
+	void helper(int[] candidates, int remain, int begin, LinkedList<Integer> solution, List<List<Integer>> solutions) {
 		if (remain == 0) {
 			solutions.add(new LinkedList<>(solution));
 			return;
@@ -635,7 +673,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 			solution.removeLast();
 		}
 	}
-	
+
 	public List<List<Integer>> combinationSum2(int[] candidates, int target) { // #40
 		List<List<Integer>> solutions = new ArrayList<>();
 		if (candidates.length > 0) {
@@ -644,8 +682,8 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return solutions;
 	}
-	void helper2(int[] candidates, int remain, int begin,
-			LinkedList<Integer> solution, List<List<Integer>> solutions) {
+
+	void helper2(int[] candidates, int remain, int begin, LinkedList<Integer> solution, List<List<Integer>> solutions) {
 		if (remain == 0) {
 			solutions.add(new LinkedList<>(solution));
 			return;
@@ -662,7 +700,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 			solution.removeLast();
 		}
 	}
-	
+
 //	public int trap(int[] height) { // #42
 //		int[] left = new int[height.length];
 //		int[] right = new int[height.length];
@@ -682,7 +720,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 //		}
 //		return water;
 //	}
-	public int trap(int[] height) {
+	public int trap(int[] height) { // #42
 		int left = 0;
 		int right = height.length - 1;
 		int maxLower = 0;
@@ -694,7 +732,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return water;
 	}
-	
+
 	public List<List<Integer>> permute(int[] nums) { // #46
 		List<List<Integer>> solutions = new ArrayList<>();
 		if (nums.length > 0) {
@@ -702,6 +740,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return solutions;
 	}
+
 	void helper(int[] nums, List<List<Integer>> solutions, int level) {
 		if (level == nums.length) {
 			List<Integer> solution = new ArrayList<>();
@@ -717,7 +756,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 			Utils.swap(nums, i, level);
 		}
 	}
-	
+
 	public List<List<Integer>> permuteUnique(int[] nums) { // #47
 		List<List<Integer>> solutions = new ArrayList<>();
 		if (nums.length > 0) {
@@ -726,8 +765,8 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return solutions;
 	}
-	void helper(int[] nums, List<List<Integer>> solutions, LinkedList<Integer> solution,
-			boolean[] used, int level) {
+
+	void helper(int[] nums, List<List<Integer>> solutions, LinkedList<Integer> solution, boolean[] used, int level) {
 		if (level == nums.length) {
 			solutions.add(new LinkedList<>(solution));
 			return;
@@ -742,7 +781,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 			}
 		}
 	}
-	
+
 //	public double myPow(double x, int n) { // #50
 //		if (n == 0) {
 //			return 1;
@@ -772,6 +811,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 		helper(solutions, board, 0);
 		return solutions;
 	}
+
 	void helper(List<List<String>> solutions, int[] board, int row) {
 		if (row == board.length) {
 			List<String> solution = new ArrayList<>();
@@ -796,6 +836,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 			}
 		}
 	}
+
 	boolean canPlace(int row, int col, int[] board) {
 		for (int i = 0; i < row; i++) {
 			if (board[i] == col) {
@@ -807,25 +848,27 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return true;
 	}
-	
+
 	int solutions = 0;
+
 	public int totalNQueens(int n) { // #52
-        DFS(n, 0, 0, 0, 0);
-        return solutions;
-    }
-    void DFS(int n, long rows, long hills, long dales, int row) {
-        if (row == n) {
-            solutions++;
-            return;
-        }
-        long vacant = ((1L << n) - 1) & ~(rows | hills | dales);
-        while (vacant != 0) {
-            long pick = vacant & -vacant;
-            vacant ^= pick;
-            DFS(n, rows ^ pick, (hills ^ pick) >> 1, (dales ^ pick) << 1, row + 1);
-        }
-    }
-	
+		DFS(n, 0, 0, 0, 0);
+		return solutions;
+	}
+
+	void DFS(int n, long rows, long hills, long dales, int row) {
+		if (row == n) {
+			solutions++;
+			return;
+		}
+		long vacant = ((1L << n) - 1) & ~(rows | hills | dales);
+		while (vacant != 0) {
+			long pick = vacant & -vacant;
+			vacant ^= pick;
+			DFS(n, rows ^ pick, (hills ^ pick) >> 1, (dales ^ pick) << 1, row + 1);
+		}
+	}
+
 	public int maxSubArray(int[] nums) { // #53
 		int ans = Integer.MIN_VALUE;
 		if (nums.length > 0) {
@@ -837,7 +880,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return ans;
 	}
-	
+
 	public int lengthOfLastWord(String s) { // #58
 		int length = 0;
 		if (s.length() > 0) {
@@ -853,7 +896,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return length;
 	}
-	
+
 	public int[] plusOne(int[] digits) { // #66
 		for (int i = digits.length - 1; i >= 0; i--) {
 			digits[i]++;
@@ -866,7 +909,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 		digits[0] = 1;
 		return digits;
 	}
-	
+
 	public String addBinary(String a, String b) { // #67
 		int len = Math.max(a.length(), b.length());
 		StringBuilder sb = new StringBuilder();
@@ -883,7 +926,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 		sb.reverse();
 		return sb.toString();
 	}
-	
+
 	public int mySqrt(int x) { // #69
 		int l = 0;
 		int r = x;
@@ -1016,10 +1059,11 @@ public int lengthOfLongestSubstring(String s) { // #3
 			}
 		}
 	}
-	
+
 	TreeNode prev;
 	TreeNode bigger;
 	TreeNode smaller;
+
 //	public void recoverTree(TreeNode root) { // #99
 //		helper(root);
 //		int tmp = bigger.val;
@@ -1056,7 +1100,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 					helper(node);
 					node = node.right;
 				}
-				
+
 			} else {
 				helper(node);
 				node = node.right;
@@ -1066,6 +1110,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 		bigger.val = smaller.val;
 		smaller.val = tmp;
 	}
+
 	void helper(TreeNode node) {
 		if (prev.val > node.val) {
 			smaller = node;
@@ -1075,7 +1120,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		prev = node;
 	}
-	
+
 	public boolean isSameTree(TreeNode p, TreeNode q) {
 		Queue<TreeNode> pQueue = new LinkedList<>();
 		Queue<TreeNode> qQueue = new LinkedList<>();
@@ -1096,6 +1141,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return pQueue.size() == qQueue.size();
 	}
+
 	boolean check(TreeNode p, TreeNode q) {
 		if (p == null && q == null) {
 			return true;
@@ -1108,7 +1154,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return true;
 	}
-	
+
 	public List<List<Integer>> levelOrder(TreeNode root) { // #102
 		List<List<Integer>> solutions = new ArrayList<>();
 		if (root != null) {
@@ -1135,7 +1181,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return solutions;
 	}
-	
+
 	public List<List<Integer>> levelOrderBottom(TreeNode root) { // #107
 		LinkedList<List<Integer>> solutions = new LinkedList<>();
 		if (root != null) {
@@ -1162,7 +1208,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return solutions;
 	}
-	
+
 	public boolean hasPathSum(TreeNode root, int sum) { // #112
 		if (root == null) {
 			return false;
@@ -1173,11 +1219,13 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return hasPathSum(root.left, sum) || hasPathSum(root.right, sum);
 	}
+
 	public List<List<Integer>> pathSum(TreeNode root, int sum) { // #113
 		List<List<Integer>> paths = new ArrayList<>();
 		helper(root, sum, paths, new LinkedList<Integer>());
 		return paths;
 	}
+
 	void helper(TreeNode root, int sum, List<List<Integer>> paths, LinkedList<Integer> path) {
 		if (root == null) {
 			return;
@@ -1194,7 +1242,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		path.removeLast();
 	}
-	
+
 	public List<List<Integer>> generate(int numRows) { // #118
 		List<List<Integer>> solutions = new ArrayList<>();
 		if (numRows > 0) {
@@ -1216,7 +1264,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return solutions;
 	}
-	
+
 	public List<Integer> getRow(int rowIndex) { // #119
 		Integer[] row = new Integer[rowIndex + 1];
 		if (rowIndex >= 0) {
@@ -1234,7 +1282,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return Arrays.asList(row);
 	}
-	
+
 	public int maxProfit(int[] prices) { // #121
 		if (prices.length == 0) {
 			return 0;
@@ -1250,7 +1298,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return maxProfit;
 	}
-	
+
 	public int maxProfitII(int[] prices) { // #122
 		int profits = 0;
 		for (int i = 1; i < prices.length; i++) {
@@ -1261,7 +1309,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return profits;
 	}
-	
+
 	public boolean isPalindrome(String s) { // #125
 		s = s.replaceAll("\\W", "");
 		return s.equalsIgnoreCase(new StringBuilder(s).reverse().toString());
@@ -1274,7 +1322,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return result;
 	}
-	
+
 	public int singleNumberII(int[] nums) { // #137
 		int once = 0;
 		int twice = 0;
@@ -1284,12 +1332,13 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return once;
 	}
-	
+
 	public static class LRUCache { // #146
 		int capacity;
 		Map<Integer, Node> map;
 		Node head;
 		Node tail;
+
 		public LRUCache(int capacity) {
 			this.capacity = capacity;
 			map = new HashMap<>();
@@ -1298,6 +1347,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 			head.next = tail;
 			tail.previous = head;
 		}
+
 		public int get(int key) {
 			Node node = map.get(key);
 			if (node == null) {
@@ -1307,6 +1357,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 			insertHead(node);
 			return node.value;
 		}
+
 		public void put(int key, int value) {
 			Node node = map.get(key);
 			if (node != null) {
@@ -1321,26 +1372,32 @@ public int lengthOfLongestSubstring(String s) { // #3
 			}
 			insertHead(node); // make this node hot :)
 		}
+
 		void remove(Node node) {
 			node.previous.next = node.next;
 			node.next.previous = node.previous;
 		}
+
 		void insertHead(Node node) {
 			node.next = head.next;
 			head.next.previous = node;
 			node.previous = head;
 			head.next = node;
 		}
+
 		public static class Node {
 			int key;
 			int value;
 			Node next;
 			Node previous;
+
 			Node(int key, int value) {
 				this.key = key;
 				this.value = value;
 			}
-			Node() {}
+
+			Node() {
+			}
 		}
 	}
 
@@ -1449,7 +1506,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return head;
 	}
-	
+
 	public boolean isPalindrome(ListNode head) { // #234
 		if (head == null || head.next == null) {
 			return true;
@@ -1490,6 +1547,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return newHead;
 	}
+
 	public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
 		if (root == null || p == root || q == root) {
 			return root;
@@ -1501,6 +1559,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return left == null ? right : left;
 	}
+
 	public int[] maxSlidingWindow(int[] nums, int k) { // #239
 		if (nums.length == 0 || k < 1) {
 			return new int[] {};
@@ -1538,7 +1597,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return true;
 	}
-	
+
 	public boolean canAttendMeetings(int[][] intervals) { // #252
 //		intervals = {
 //				{5, 15}, meeting 1, starts 5 ends 15 
@@ -1554,7 +1613,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return true;
 	}
-	
+
 //	public int minMeetingRooms(int[][] intervals) { // #253
 //		PriorityQueue<Integer> convenings = new PriorityQueue<>();
 //		if (intervals.length > 0) {
@@ -1568,7 +1627,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 //		}
 //		return convenings.size();
 //	}
-	
+
 	public int minMeetingRooms(int[][] intervals) {
 		int rooms = 0;
 		if (intervals.length > 0) {
@@ -1604,7 +1663,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 			cur++;
 		}
 	}
-	
+
 	public int lengthOfLIS(int[] nums) { // #300
 		int[] dp = new int[nums.length];
 		int max = 0;
@@ -1641,7 +1700,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return dp[amount];
 	}
-	
+
 	public int largestBSTSubtree(TreeNode root) { // #333
 		if (isBST(root)) {
 			return getCount(root);
@@ -1650,23 +1709,25 @@ public int lengthOfLongestSubstring(String s) { // #3
 		int right = largestBSTSubtree(root.right);
 		return Math.max(left, right);
 	}
+
 	boolean isBST(TreeNode root) {
 		return isBST(root, Integer.MAX_VALUE, Integer.MIN_VALUE);
 	}
+
 	boolean isBST(TreeNode root, int max, int min) {
 		if (root == null) {
 			return true;
 		}
-		return root.val < max && root.val > min && isBST(root.left, root.val, min) &&
-				isBST(root.right, max, root.val);
+		return root.val < max && root.val > min && isBST(root.left, root.val, min) && isBST(root.right, max, root.val);
 	}
+
 	int getCount(TreeNode root) {
 		if (root == null) {
 			return 0;
 		}
 		return 1 + getCount(root.left) + getCount(root.right);
 	}
-	
+
 	public void reverseString(char[] s) { // #344
 		if (s.length > 1) {
 			int l = 0;
@@ -1680,7 +1741,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 			}
 		}
 	}
-	
+
 	public boolean isPerfectSquare(int num) { // #367
 		int odd = 1;
 		while (num > 0) {
@@ -1689,7 +1750,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return num == 0;
 	}
-	
+
 	public boolean isSubtree(TreeNode s, TreeNode t) { // #572
 		return serialize(s, new StringBuilder()).contains(serialize(t, new StringBuilder()));
 	}
@@ -1764,7 +1825,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return dp[text2.length()];
 	}
-	
+
 	public boolean isPathCrossing(String path) { // #1496
 		HashSet<String> set = new HashSet<>();
 		int x = 0, y = 0;
@@ -1812,9 +1873,9 @@ public int lengthOfLongestSubstring(String s) { // #3
 			this.val = val;
 		}
 	}
-	
+
 	// Interviews
-	
+
 	/*
 	 * https://leetcode-cn.com/problems/sub-sort-lcci/
 	 */
@@ -1845,7 +1906,7 @@ public int lengthOfLongestSubstring(String s) { // #3
 		}
 		return new int[] { ri, li };
 	}
-	
+
 	/*
 	 * https://leetcode-cn.com/problems/li-wu-de-zui-da-jie-zhi-lcof/
 	 */
