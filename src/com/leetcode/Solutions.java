@@ -571,6 +571,29 @@ public class Solutions {
 		}
 		return results;
 	}
+	
+	public void nextPermutation(int[] nums) { // #31
+		int i = nums.length - 2;
+		while (i >=0 && nums[i] >= nums[i + 1]) {
+			i--;
+		}
+		if (i >= 0) {
+			int j = nums.length - 1;
+			while (j > 0 && nums[j] <= nums[i]) {
+				j--;
+			}
+			Utils.swap(nums, i, j);
+		}
+		reverse(nums, i + 1);
+	}
+	void reverse(int[] nums, int start) {
+		int end = nums.length - 1;
+		while (start < end) {
+			Utils.swap(nums, start, end);
+			start++;
+			end--;
+		}
+	}
 
 	public int searchInsert(int[] nums, int target) { // #35
 		int left = 0;

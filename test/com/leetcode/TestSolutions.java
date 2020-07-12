@@ -621,4 +621,19 @@ public class TestSolutions {
 			};
 		assertFalse(solutions.isValidSudoku(board));
 	}
+	@Test
+	public void testNextPermutation() {
+		int[] nums = { 1, 2, 3 };
+		solutions.nextPermutation(nums);
+		assertThat(nums, is(new int[] { 1, 3, 2 }));
+		nums = new int[] { 3, 2, 1 };
+		solutions.nextPermutation(nums);
+		assertThat(nums, is(new int[] { 1, 2, 3 }));
+		nums = new int[] { 1, 1, 5 };
+		solutions.nextPermutation(nums);
+		assertThat(nums, is(new int[] { 1, 5, 1 }));
+		nums = new int[] { 1, 2 };
+		solutions.nextPermutation(nums);
+		assertThat(nums, is(new int[] { 2, 1 }));
+	}
 }
