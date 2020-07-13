@@ -922,6 +922,19 @@ public class Solutions {
 		}
 		return ans;
 	}
+	
+	public boolean canJump(int[] nums) { // #55
+		int farest = 0;
+		for (int i = 0; i < nums.length; i++) {
+			if (i <= farest) {
+				farest = Math.max(farest, i + nums[i]);
+			}
+			if (farest >= nums.length - 1) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	public int lengthOfLastWord(String s) { // #58
 		int length = 0;
@@ -1163,7 +1176,7 @@ public class Solutions {
 		prev = node;
 	}
 
-	public boolean isSameTree(TreeNode p, TreeNode q) {
+	public boolean isSameTree(TreeNode p, TreeNode q) { // #100
 		Queue<TreeNode> pQueue = new LinkedList<>();
 		Queue<TreeNode> qQueue = new LinkedList<>();
 		pQueue.offer(p);
@@ -1195,6 +1208,22 @@ public class Solutions {
 			return false;
 		}
 		return true;
+	}
+	
+	public boolean isSymmetric(TreeNode root) { // #101
+		if (root == null) {
+			return true;
+		}
+		return DFS(root.left, root.right);
+	}
+	boolean DFS(TreeNode p, TreeNode q) {
+		if (p == null && q == null) {
+			return true;
+		}
+		if (p == null || q == null || p.val != q.val) {
+			return false;
+		}
+		return DFS(p.left, q.right) && DFS(p.right, q.left);
 	}
 
 	public List<List<Integer>> levelOrder(TreeNode root) { // #102
@@ -1249,6 +1278,23 @@ public class Solutions {
 			}
 		}
 		return solutions;
+	}
+	
+	public int minDepth(TreeNode root) { // #111
+		if (root == null) {
+			return 0;
+		}
+		if (root.left == null && root.right == null) {
+			return 1;
+		}
+		int minDepth = Integer.MAX_VALUE;
+		if (root.left != null) {
+			minDepth = Math.min(minDepth, minDepth(root.left));
+		}
+		if (root.right != null) {
+			minDepth = Math.min(minDepth, minDepth(root.right));
+		}
+		return minDepth + 1;
 	}
 
 	public boolean hasPathSum(TreeNode root, int sum) { // #112
