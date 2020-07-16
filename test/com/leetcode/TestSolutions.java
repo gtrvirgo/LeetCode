@@ -686,4 +686,24 @@ public class TestSolutions {
 		root = Utils.createBinaryTree(nums);
 		assertThat(solutions.minDepth(root), is(2));
 	}
+	@Test
+	public void testFirstMissingPositive() {
+		int[] nums = { 1, 2, 0 };
+		assertThat(solutions.firstMissingPositive(nums), is(3));
+		nums = new int[] { 3, 4, -1, 1 };
+		assertThat(solutions.firstMissingPositive(nums), is(2));
+		nums = new int[] { 7,8,9,11,12 };
+		assertThat(solutions.firstMissingPositive(nums), is(1));
+		nums = new int[] { -1,4,2,1,9,10 };
+		assertThat(solutions.firstMissingPositive(nums), is(3));
+	}
+	@Test
+	public void testIsMatch() {
+		assertFalse(solutions.isMatch("aa", "a"));
+		assertTrue(solutions.isMatch("aa", "*"));
+		assertFalse(solutions.isMatch("cb", "?a"));
+		assertTrue(solutions.isMatch("adceb", "a*b"));
+		assertFalse(solutions.isMatch("acdcb", "a*c?b"));
+		assertTrue(solutions.isMatch("adceb", "*a*b"));
+	}
 }

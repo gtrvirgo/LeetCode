@@ -594,6 +594,25 @@ public class Solutions {
 			end--;
 		}
 	}
+	
+	public int longestValidParentheses(String s) { // #32
+		Stack<Integer> stack = new Stack<>();
+		int len = 0;
+		stack.push(-1);
+		for (int i = 0; i < s.length(); i++) {
+			if (s.charAt(i) == '(') {
+				stack.push(i);
+			} else {
+				stack.pop();
+				if (stack.isEmpty()) {
+					stack.push(i);
+				} else {
+					len = Math.max(len, i - stack.peek());
+				}
+			}
+		}
+		return len;
+	}
 
 	public int searchInsert(int[] nums, int target) { // #35
 		int left = 0;
@@ -724,23 +743,21 @@ public class Solutions {
 		}
 	}
 	
-	public int longestValidParentheses(String s) { // #41
-		Stack<Integer> stack = new Stack<>();
-		int len = 0;
-		stack.push(-1);
-		for (int i = 0; i < s.length(); i++) {
-			if (s.charAt(i) == '(') {
-				stack.push(i);
+	public int firstMissingPositive(int[] nums) { // #41
+		int pos = 1;
+		while (pos <= nums.length) {
+			if (nums[pos - 1] > 0 && nums[pos - 1] < nums.length && nums[pos - 1] != pos && nums[nums[pos - 1] - 1] != nums[pos - 1]) {
+				Utils.swap(nums, pos - 1, nums[pos - 1] - 1);
 			} else {
-				stack.pop();
-				if (stack.isEmpty()) {
-					stack.push(i);
-				} else {
-					len = Math.max(len, i - stack.peek());
-				}
+				pos++;
 			}
 		}
-		return len;
+		for (int i = 0; i < nums.length; i++) {
+			if (nums[i] != i + 1) {
+				return i + 1;
+			}
+		}
+		return nums.length + 1;
 	}
 
 //	public int trap(int[] height) { // #42
@@ -773,6 +790,27 @@ public class Solutions {
 			water += maxLower - lower;
 		}
 		return water;
+	}
+	
+	public boolean isMatch(String s, String p) { // #44
+		boolean[][] dp = new boolean[p.length() + 1][s.length() + 1];
+		dp[0][0] = true;
+		for (int i = 1; i <= p.length(); i++) {
+			if (p.charAt(i - 1) != '*') {
+				break;
+			}
+			dp[i][0] = true;
+		}
+		for (int i = 1; i <= p.length(); i++) {
+			for (int j = 1; j <= s.length(); j++) {
+				if (s.charAt(j - 1) == p.charAt(i - 1) || p.charAt(i - 1) == '?') {
+					dp[i][j] = dp[i - 1][j - 1];
+				} else if (p.charAt(i - 1) == '*') {
+					dp[i][j] = dp[i - 1][j] || dp[i][j - 1];
+				}
+			}
+		}
+		return dp[p.length()][s.length()];
 	}
 
 	public List<List<Integer>> permute(int[] nums) { // #46
