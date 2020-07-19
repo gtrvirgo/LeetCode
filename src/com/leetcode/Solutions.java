@@ -1,15 +1,6 @@
 package com.leetcode;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
-import java.util.Stack;
+import java.util.*;
 
 public class Solutions {
 
@@ -1289,6 +1280,42 @@ public class Solutions {
 			}
 		}
 		return solutions;
+	}
+
+	public int maxDepth(TreeNode root) { // #104
+		if (root == null) {
+			return 0;
+		}
+		int left = maxDepth(root.left);
+		int right = maxDepth(root.right);
+		return Math.max(left, right) + 1;
+	}
+
+	int preIndex = 0;
+	public TreeNode buildTree(int[] preorder, int[] inorder) { // #105
+		return helper(preorder, inorder, 0, inorder.length - 1);
+	}
+	TreeNode helper(int[] preorder, int[] inorder, int inStart, int inEnd) {
+		if (inStart > inEnd) {
+			return null;
+		}
+		TreeNode root = new TreeNode(preorder[preIndex++]);
+		if (inStart == inEnd) {
+			return root;
+		}
+		int inIndex = find(inorder, inStart, inEnd, root.val);
+		root.left = helper(preorder, inorder, inStart, inIndex - 1);
+		root.right = helper(preorder, inorder, inIndex + 1, inEnd);
+		return root;
+	}
+	int find(int[] inorder, int start, int end, int val) {
+		int i;
+		for (i = start; i <= end; i++) {
+			if (inorder[i] == val) {
+				break;
+			}
+		}
+		return i;
 	}
 
 	public List<List<Integer>> levelOrderBottom(TreeNode root) { // #107

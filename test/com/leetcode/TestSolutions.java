@@ -1,25 +1,16 @@
 package com.leetcode;
 
-import org.junit.Test;
-
 import com.leetcode.Solutions.ListNode;
 import com.leetcode.Solutions.TreeNode;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-
-import static org.hamcrest.MatcherAssert.*;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.hamcrest.CoreMatchers.*;
-
 import org.junit.BeforeClass;
+import org.junit.Test;
+
+import java.util.*;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.*;
 
 public class TestSolutions {
 
@@ -705,5 +696,19 @@ public class TestSolutions {
 		assertTrue(solutions.isMatch("adceb", "a*b"));
 		assertFalse(solutions.isMatch("acdcb", "a*c?b"));
 		assertTrue(solutions.isMatch("adceb", "*a*b"));
+	}
+	@Test
+	public void testMaxDepth() {
+		Integer[] nums = { 3,9,20,null,null,15,7 };
+		TreeNode root = Utils.createBinaryTree(nums);
+		assertThat(solutions.maxDepth(root), is(3));
+	}
+	@Test
+	public void testBuildTree() {
+		int[] preorder = {3,9,20,15,7};
+		int[] inorder = {9,3,15,20,7};
+		Integer[] nums = { 3, 9, 20, null, null, 15, 7 };
+		TreeNode root = Utils.createBinaryTree(nums);
+		assertTrue(solutions.isSameTree(root, solutions.buildTree(preorder, inorder)));
 	}
 }
