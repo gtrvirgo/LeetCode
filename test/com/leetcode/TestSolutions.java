@@ -719,4 +719,14 @@ public class TestSolutions {
 		TreeNode root = Utils.createBinaryTree(nums);
 		assertTrue(solutions.isSameTree(root, solutions.buildTreeII(inorder, postorder)));
 	}
+	@Test
+	public void testZigZagLevelOrder() {
+		Integer[] nums = {3,9,20,null,null,15,7};
+		TreeNode root = Utils.createBinaryTree(nums);
+		List<List<Integer>> expecteds = new ArrayList<>();
+		expecteds.add(Arrays.asList(3));
+		expecteds.add(Arrays.asList(20, 9));
+		expecteds.add(Arrays.asList(15, 7));
+		assertThat(solutions.zigzagLevelOrder(root), is(expecteds));
+	}
 }

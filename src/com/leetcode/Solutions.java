@@ -1282,6 +1282,38 @@ public class Solutions {
 		return solutions;
 	}
 
+	public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+		Queue<TreeNode> queue = new LinkedList<>();
+		if (root != null) {
+			queue.offer(root);
+		}
+		List<List<Integer>> solutions = new ArrayList<>();
+		int level = 0;
+		int count = queue.size();
+		List<Integer> solution = new ArrayList<>();
+		while (!queue.isEmpty())  {
+			TreeNode node = queue.poll();
+			count--;
+			solution.add(node.val);
+			if (node.left != null) {
+				queue.offer(node.left);
+			}
+			if (node.right != null) {
+				queue.offer(node.right);
+			}
+			if (count == 0) {
+				count = queue.size();
+				if (level++ % 2 != 0) {
+					Collections.reverse(solution);
+				}
+				solutions.add(new ArrayList<>(solution));
+				solution.clear();
+
+			}
+		}
+		return solutions;
+	}
+
 	public int maxDepth(TreeNode root) { // #104
 		if (root == null) {
 			return 0;
