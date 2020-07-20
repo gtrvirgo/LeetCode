@@ -1317,6 +1317,25 @@ public class Solutions {
 		}
 		return i;
 	}
+	
+	int postIndex;
+	public TreeNode buildTreeII(int[] inorder, int[] postorder) { // #106
+		postIndex = postorder.length - 1;
+		return buildTree(inorder, postorder, 0, inorder.length - 1);
+	}
+	TreeNode buildTree(int[] inorder, int[] postorder, int inStart, int inEnd) {
+		if (inStart > inEnd) {
+			return null;
+		}
+		TreeNode root = new TreeNode(postorder[postIndex--]);
+		if (inStart == inEnd) {
+			return root;
+		}
+		int inIndex = find(inorder, inStart, inEnd, root.val);
+		root.right = buildTree(inorder, postorder, inIndex + 1, inEnd);
+		root.left = buildTree(inorder, postorder, inStart, inIndex - 1);
+		return root;
+	}
 
 	public List<List<Integer>> levelOrderBottom(TreeNode root) { // #107
 		LinkedList<List<Integer>> solutions = new LinkedList<>();

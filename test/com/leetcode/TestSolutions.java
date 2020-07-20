@@ -711,4 +711,12 @@ public class TestSolutions {
 		TreeNode root = Utils.createBinaryTree(nums);
 		assertTrue(solutions.isSameTree(root, solutions.buildTree(preorder, inorder)));
 	}
+	@Test
+	public void testBuildTreeII() {
+		int[] inorder = {9,3,15,20,7};
+		int[] postorder = {9,15,7,20,3};
+		Integer[] nums = {3,9,20,null,null,15,7};
+		TreeNode root = Utils.createBinaryTree(nums);
+		assertTrue(solutions.isSameTree(root, solutions.buildTreeII(inorder, postorder)));
+	}
 }
