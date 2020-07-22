@@ -719,4 +719,9 @@ public class TestSolutions {
 		TreeNode root = Utils.createBinaryTree(nums);
 		assertTrue(solutions.isSameTree(root, solutions.buildTreeII(inorder, postorder)));
 	}
+	@Test
+	public void testJump() {
+		int[] nums = { 2, 3, 1, 1, 4 };
+		assertThat(solutions.jump(nums), is(2));
+	}
 }

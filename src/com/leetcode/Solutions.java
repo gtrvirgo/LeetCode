@@ -803,6 +803,35 @@ public class Solutions {
 		}
 		return dp[p.length()][s.length()];
 	}
+	
+//	public int jump(int nums[]) { // #44
+//		int cur = nums.length - 1;
+//		int steps = 0;
+//		while (cur > 0) {
+//			for (int i = 0; i < cur; i++) {
+//				if (i + nums[i] >= cur) {
+//					cur = i;
+//					steps++;
+//					break;
+//				}
+//			}
+//		}
+//		return steps;
+//	}
+	
+	public int jump(int[] nums) { // #44
+		int maxReachable = 0;
+		int edge = 0;
+		int steps = 0;
+		for (int i = 0; i < nums.length - 1; i++) {
+			maxReachable = Math.max(maxReachable, i + nums[i]);
+			if (i == edge) {
+				edge = maxReachable;
+				steps++;
+			}
+		}
+		return steps;
+	}
 
 	public List<List<Integer>> permute(int[] nums) { // #46
 		List<List<Integer>> solutions = new ArrayList<>();
