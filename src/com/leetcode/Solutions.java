@@ -266,6 +266,36 @@ public class Solutions {
 		}
 		return x == halfX || x == halfX / 10;
 	}
+	
+	public boolean isRegExpMatch(String s, String p) { // #10
+		boolean[][] dp = new boolean[s.length() + 1][p.length() + 1];
+		dp[0][0] = true;
+		for (int i = 0; i <= s.length(); i++) {
+			for (int j = 1; j <= p.length(); j++) {
+				if (p.charAt(j - 1) == '*') {
+					dp[i][j] = dp[i][j - 2];
+					if (matches(s, p, i, j - 1)) {
+						dp[i][j] = dp[i][j] | dp[i - 1][j];
+					}
+				} else {
+					if (matches(s, p, i, j)) {
+						dp[i][j] = dp[i - 1][j - 1];
+					}
+				}
+			}
+		}
+		return dp[s.length()][p.length()];
+		
+	}
+	boolean matches(String s, String p, int i, int j) {
+		if (i == 0) {
+			return false;
+		}
+		if (p.charAt(j - 1) == '.') {
+			return true;
+		}
+		return s.charAt(i - 1) == p.charAt(j - 1);
+	}
 
 	public int maxArea(int[] height) { // #11
 		int left = 0;
@@ -396,7 +426,40 @@ public class Solutions {
 		}
 		return solutions;
 	}
-
+	
+	public int threeSumClosest(int[] nums, int target) { // #16
+		long closest = Integer.MAX_VALUE;
+		Arrays.sort(nums);
+		for (int i = 0; i < nums.length; i++) {
+			if (i > 0 && nums[i] == nums[i - 1]) continue;
+			int j = i + 1, k =  nums.length - 1;
+			while (j < k) {
+				int sum = nums[i] + nums[j] + nums[k];
+				if (sum == target) {
+					return target;
+				}
+				if (Math.abs(sum - target) < Math.abs(closest - target)) {
+					closest = sum;
+				}
+				if (sum > target) {
+					int k0 = k - 1;
+					while (j < k0 && nums[k] == nums[k0]) {
+						k0--;
+					}
+					k = k0;
+				}
+				if (sum < target) {
+					int j0 = j + 1;
+					while (j0 < k && nums[j] == nums[j0]) {
+						j0++;
+					}
+					j = j0;
+				}
+			}
+		}
+		return (int) closest;
+	}
+	
 	char[][] dialer = { { 'a', 'b', 'c' }, { 'd', 'e', 'f' }, { 'g', 'h', 'i' }, { 'j', 'k', 'l' }, { 'm', 'n', 'o' },
 			{ 'p', 'q', 'r', 's' }, { 't', 'u', 'v' }, { 'w', 'x', 'y', 'z' } };
 
@@ -415,6 +478,41 @@ public class Solutions {
 			combination[level] = c;
 			helper(combinations, digits, combination, level + 1);
 		}
+	}
+	
+	public List<List<Integer>> fourSum(int[] nums, int target) { // #18
+		List<List<Integer>> solutions = new ArrayList<>();
+		Arrays.sort(nums);
+		for (int a = 0; a <= nums.length - 4; a++) {
+			if (a > 0 && nums[a] == nums[a - 1]) {
+				continue;
+			}
+			for (int b = a + 1; b <= nums.length - 3; b++) {
+				if (b > a + 1 && nums[b] == nums[b - 1]) {
+					continue;
+				}
+				int c = b + 1, d = nums.length - 1;
+				while (c < d) {
+					int sum = nums[a] + nums[b] + nums[c] + nums[d];
+					if (sum > target) {
+						d--;
+					} else if (sum < target) {
+						c++;
+					} else {
+						solutions.add(Arrays.asList(nums[a], nums[b], nums[c], nums[d]));
+						while (c < d && nums[c] == nums[c + 1]) {
+							c++;
+						}
+						while (c < d && nums[d] == nums[d - 1]) {
+							d--;
+						}
+						c++;
+						d--;
+					}
+				}
+			}
+		}
+		return solutions;
 	}
 
 	public boolean isValid(String s) { // #20

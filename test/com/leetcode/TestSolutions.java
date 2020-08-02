@@ -1,16 +1,25 @@
 package com.leetcode;
 
-import com.leetcode.Solutions.ListNode;
-import com.leetcode.Solutions.TreeNode;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
-import java.util.*;
-
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import com.leetcode.Solutions.ListNode;
+import com.leetcode.Solutions.TreeNode;
 
 public class TestSolutions {
 
@@ -733,5 +742,38 @@ public class TestSolutions {
 	public void testJump() {
 		int[] nums = { 2, 3, 1, 1, 4 };
 		assertThat(solutions.jump(nums), is(2));
+	}
+	@Test
+	public void testThreeSumClosest() {
+		int[] nums = {-1,2,1,-4};
+		int target = 1;
+		assertThat(solutions.threeSumClosest(nums, target), is(2));
+		nums = new int[] {-3,-2,-5,3,-4};
+		target = -1;
+		assertThat(solutions.threeSumClosest(nums, target), is(-2));
+	}
+	@Test
+	public void testFourSum() {
+		int[] nums = {1, 0, -1, 0, -2, 2};
+		int target = 0;
+		Set<List<Integer>> expected = new HashSet<>();
+		expected.add(Arrays.asList(-1, 0, 0, 1));
+		expected.add(Arrays.asList(-2, -1, 1, 2));
+		expected.add(Arrays.asList(-2,  0, 0, 2));
+		assertThat(new HashSet<List<Integer>>(solutions.fourSum(nums, target)), is(expected));
+		nums = new int[] { 0, 0, 0, 0 };
+		target = 0;
+		expected = new HashSet<>();
+		expected.add(Arrays.asList(0, 0, 0, 0));
+		assertThat(new HashSet<List<Integer>>(solutions.fourSum(nums, target)), is(expected));
+	}
+	@Test
+	public void testIsRegExpMatch() {
+		assertTrue(solutions.isRegExpMatch("", ".*"));
+		assertFalse(solutions.isRegExpMatch("aa", "a"));
+		assertTrue(solutions.isRegExpMatch("aa", "a*"));
+		assertTrue(solutions.isRegExpMatch("ab", ".*"));
+		assertTrue(solutions.isRegExpMatch("aab", "c*a*b"));
+		assertFalse(solutions.isRegExpMatch("mississippi", "mis*is*p*."));
 	}
 }
