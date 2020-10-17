@@ -2,6 +2,7 @@ package com.leetcode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Deque;
 import java.util.HashMap;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Stack;
+
 
 public class Solutions {
 
@@ -276,6 +278,36 @@ public class Solutions {
 		}
 		return x == halfX || x == halfX / 10;
 	}
+	
+	public boolean isRegExpMatch(String s, String p) { // #10
+		boolean[][] dp = new boolean[s.length() + 1][p.length() + 1];
+		dp[0][0] = true;
+		for (int i = 0; i <= s.length(); i++) {
+			for (int j = 1; j <= p.length(); j++) {
+				if (p.charAt(j - 1) == '*') {
+					dp[i][j] = dp[i][j - 2];
+					if (matches(s, p, i, j - 1)) {
+						dp[i][j] = dp[i][j] | dp[i - 1][j];
+					}
+				} else {
+					if (matches(s, p, i, j)) {
+						dp[i][j] = dp[i - 1][j - 1];
+					}
+				}
+			}
+		}
+		return dp[s.length()][p.length()];
+		
+	}
+	boolean matches(String s, String p, int i, int j) {
+		if (i == 0) {
+			return false;
+		}
+		if (p.charAt(j - 1) == '.') {
+			return true;
+		}
+		return s.charAt(i - 1) == p.charAt(j - 1);
+	}
 
 	public int maxArea(int[] height) { // #11
 		int left = 0;
@@ -406,7 +438,40 @@ public class Solutions {
 		}
 		return solutions;
 	}
-
+	
+	public int threeSumClosest(int[] nums, int target) { // #16
+		long closest = Integer.MAX_VALUE;
+		Arrays.sort(nums);
+		for (int i = 0; i < nums.length; i++) {
+			if (i > 0 && nums[i] == nums[i - 1]) continue;
+			int j = i + 1, k =  nums.length - 1;
+			while (j < k) {
+				int sum = nums[i] + nums[j] + nums[k];
+				if (sum == target) {
+					return target;
+				}
+				if (Math.abs(sum - target) < Math.abs(closest - target)) {
+					closest = sum;
+				}
+				if (sum > target) {
+					int k0 = k - 1;
+					while (j < k0 && nums[k] == nums[k0]) {
+						k0--;
+					}
+					k = k0;
+				}
+				if (sum < target) {
+					int j0 = j + 1;
+					while (j0 < k && nums[j] == nums[j0]) {
+						j0++;
+					}
+					j = j0;
+				}
+			}
+		}
+		return (int) closest;
+	}
+	
 	char[][] dialer = { { 'a', 'b', 'c' }, { 'd', 'e', 'f' }, { 'g', 'h', 'i' }, { 'j', 'k', 'l' }, { 'm', 'n', 'o' },
 			{ 'p', 'q', 'r', 's' }, { 't', 'u', 'v' }, { 'w', 'x', 'y', 'z' } };
 
@@ -425,6 +490,41 @@ public class Solutions {
 			combination[level] = c;
 			helper(combinations, digits, combination, level + 1);
 		}
+	}
+	
+	public List<List<Integer>> fourSum(int[] nums, int target) { // #18
+		List<List<Integer>> solutions = new ArrayList<>();
+		Arrays.sort(nums);
+		for (int a = 0; a <= nums.length - 4; a++) {
+			if (a > 0 && nums[a] == nums[a - 1]) {
+				continue;
+			}
+			for (int b = a + 1; b <= nums.length - 3; b++) {
+				if (b > a + 1 && nums[b] == nums[b - 1]) {
+					continue;
+				}
+				int c = b + 1, d = nums.length - 1;
+				while (c < d) {
+					int sum = nums[a] + nums[b] + nums[c] + nums[d];
+					if (sum > target) {
+						d--;
+					} else if (sum < target) {
+						c++;
+					} else {
+						solutions.add(Arrays.asList(nums[a], nums[b], nums[c], nums[d]));
+						while (c < d && nums[c] == nums[c + 1]) {
+							c++;
+						}
+						while (c < d && nums[d] == nums[d - 1]) {
+							d--;
+						}
+						c++;
+						d--;
+					}
+				}
+			}
+		}
+		return solutions;
 	}
 
 	public boolean isValid(String s) { // #20
@@ -595,6 +695,25 @@ public class Solutions {
 			end--;
 		}
 	}
+	
+	public int longestValidParentheses(String s) { // #32
+		Stack<Integer> stack = new Stack<>();
+		int len = 0;
+		stack.push(-1);
+		for (int i = 0; i < s.length(); i++) {
+			if (s.charAt(i) == '(') {
+				stack.push(i);
+			} else {
+				stack.pop();
+				if (stack.isEmpty()) {
+					stack.push(i);
+				} else {
+					len = Math.max(len, i - stack.peek());
+				}
+			}
+		}
+		return len;
+	}
 
 	public int searchInsert(int[] nums, int target) { // #35
 		int left = 0;
@@ -725,23 +844,21 @@ public class Solutions {
 		}
 	}
 	
-	public int longestValidParentheses(String s) { // #41
-		Stack<Integer> stack = new Stack<>();
-		int len = 0;
-		stack.push(-1);
-		for (int i = 0; i < s.length(); i++) {
-			if (s.charAt(i) == '(') {
-				stack.push(i);
+	public int firstMissingPositive(int[] nums) { // #41
+		int pos = 1;
+		while (pos <= nums.length) {
+			if (nums[pos - 1] > 0 && nums[pos - 1] < nums.length && nums[pos - 1] != pos && nums[nums[pos - 1] - 1] != nums[pos - 1]) {
+				Utils.swap(nums, pos - 1, nums[pos - 1] - 1);
 			} else {
-				stack.pop();
-				if (stack.isEmpty()) {
-					stack.push(i);
-				} else {
-					len = Math.max(len, i - stack.peek());
-				}
+				pos++;
 			}
 		}
-		return len;
+		for (int i = 0; i < nums.length; i++) {
+			if (nums[i] != i + 1) {
+				return i + 1;
+			}
+		}
+		return nums.length + 1;
 	}
 
 //	public int trap(int[] height) { // #42
@@ -774,6 +891,56 @@ public class Solutions {
 			water += maxLower - lower;
 		}
 		return water;
+	}
+	
+	public boolean isMatch(String s, String p) { // #44
+		boolean[][] dp = new boolean[p.length() + 1][s.length() + 1];
+		dp[0][0] = true;
+		for (int i = 1; i <= p.length(); i++) {
+			if (p.charAt(i - 1) != '*') {
+				break;
+			}
+			dp[i][0] = true;
+		}
+		for (int i = 1; i <= p.length(); i++) {
+			for (int j = 1; j <= s.length(); j++) {
+				if (s.charAt(j - 1) == p.charAt(i - 1) || p.charAt(i - 1) == '?') {
+					dp[i][j] = dp[i - 1][j - 1];
+				} else if (p.charAt(i - 1) == '*') {
+					dp[i][j] = dp[i - 1][j] || dp[i][j - 1];
+				}
+			}
+		}
+		return dp[p.length()][s.length()];
+	}
+	
+//	public int jump(int nums[]) { // #44
+//		int cur = nums.length - 1;
+//		int steps = 0;
+//		while (cur > 0) {
+//			for (int i = 0; i < cur; i++) {
+//				if (i + nums[i] >= cur) {
+//					cur = i;
+//					steps++;
+//					break;
+//				}
+//			}
+//		}
+//		return steps;
+//	}
+	
+	public int jump(int[] nums) { // #44
+		int maxReachable = 0;
+		int edge = 0;
+		int steps = 0;
+		for (int i = 0; i < nums.length - 1; i++) {
+			maxReachable = Math.max(maxReachable, i + nums[i]);
+			if (i == edge) {
+				edge = maxReachable;
+				steps++;
+			}
+		}
+		return steps;
 	}
 
 	public List<List<Integer>> permute(int[] nums) { // #46
@@ -923,7 +1090,7 @@ public class Solutions {
 		}
 		return ans;
 	}
-	
+
 	public int[][] merge(int[][] intervals) { // #56
 		if (intervals.length == 0) {
             return intervals;
@@ -941,6 +1108,19 @@ public class Solutions {
 		}
 		int[][] arr = new int[ans.size()][2];
 		return ans.toArray(arr);
+	}
+	
+	public boolean canJump(int[] nums) { // #55
+		int farest = 0;
+		for (int i = 0; i < nums.length; i++) {
+			if (i <= farest) {
+				farest = Math.max(farest, i + nums[i]);
+			}
+			if (farest >= nums.length - 1) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public int lengthOfLastWord(String s) { // #58
@@ -1183,7 +1363,7 @@ public class Solutions {
 		prev = node;
 	}
 
-	public boolean isSameTree(TreeNode p, TreeNode q) {
+	public boolean isSameTree(TreeNode p, TreeNode q) { // #100
 		Queue<TreeNode> pQueue = new LinkedList<>();
 		Queue<TreeNode> qQueue = new LinkedList<>();
 		pQueue.offer(p);
@@ -1216,6 +1396,22 @@ public class Solutions {
 		}
 		return true;
 	}
+	
+	public boolean isSymmetric(TreeNode root) { // #101
+		if (root == null) {
+			return true;
+		}
+		return DFS(root.left, root.right);
+	}
+	boolean DFS(TreeNode p, TreeNode q) {
+		if (p == null && q == null) {
+			return true;
+		}
+		if (p == null || q == null || p.val != q.val) {
+			return false;
+		}
+		return DFS(p.left, q.right) && DFS(p.right, q.left);
+	}
 
 	public List<List<Integer>> levelOrder(TreeNode root) { // #102
 		List<List<Integer>> solutions = new ArrayList<>();
@@ -1244,6 +1440,93 @@ public class Solutions {
 		return solutions;
 	}
 
+	public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+		Queue<TreeNode> queue = new LinkedList<>();
+		if (root != null) {
+			queue.offer(root);
+		}
+		List<List<Integer>> solutions = new ArrayList<>();
+		int level = 0;
+		int count = queue.size();
+		List<Integer> solution = new ArrayList<>();
+		while (!queue.isEmpty())  {
+			TreeNode node = queue.poll();
+			count--;
+			solution.add(node.val);
+			if (node.left != null) {
+				queue.offer(node.left);
+			}
+			if (node.right != null) {
+				queue.offer(node.right);
+			}
+			if (count == 0) {
+				count = queue.size();
+				if (level++ % 2 != 0) {
+					Collections.reverse(solution);
+				}
+				solutions.add(new ArrayList<>(solution));
+				solution.clear();
+
+			}
+		}
+		return solutions;
+	}
+
+	public int maxDepth(TreeNode root) { // #104
+		if (root == null) {
+			return 0;
+		}
+		int left = maxDepth(root.left);
+		int right = maxDepth(root.right);
+		return Math.max(left, right) + 1;
+	}
+
+	int preIndex = 0;
+	public TreeNode buildTree(int[] preorder, int[] inorder) { // #105
+		return helper(preorder, inorder, 0, inorder.length - 1);
+	}
+	TreeNode helper(int[] preorder, int[] inorder, int inStart, int inEnd) {
+		if (inStart > inEnd) {
+			return null;
+		}
+		TreeNode root = new TreeNode(preorder[preIndex++]);
+		if (inStart == inEnd) {
+			return root;
+		}
+		int inIndex = find(inorder, inStart, inEnd, root.val);
+		root.left = helper(preorder, inorder, inStart, inIndex - 1);
+		root.right = helper(preorder, inorder, inIndex + 1, inEnd);
+		return root;
+	}
+	int find(int[] inorder, int start, int end, int val) {
+		int i;
+		for (i = start; i <= end; i++) {
+			if (inorder[i] == val) {
+				break;
+			}
+		}
+		return i;
+	}
+	
+	int postIndex;
+	public TreeNode buildTreeII(int[] inorder, int[] postorder) { // #106
+		postIndex = postorder.length - 1;
+		return buildTree(inorder, postorder, 0, inorder.length - 1);
+	}
+	TreeNode buildTree(int[] inorder, int[] postorder, int inStart, int inEnd) {
+		if (inStart > inEnd) {
+			return null;
+		}
+		TreeNode root = new TreeNode(postorder[postIndex--]);
+		if (inStart == inEnd) {
+			return root;
+		}
+		int inIndex = find(inorder, inStart, inEnd, root.val);
+		root.right = buildTree(inorder, postorder, inIndex + 1, inEnd);
+		root.left = buildTree(inorder, postorder, inStart, inIndex - 1);
+		return root;
+	}
+
 	public List<List<Integer>> levelOrderBottom(TreeNode root) { // #107
 		LinkedList<List<Integer>> solutions = new LinkedList<>();
 		if (root != null) {
@@ -1269,6 +1552,23 @@ public class Solutions {
 			}
 		}
 		return solutions;
+	}
+	
+	public int minDepth(TreeNode root) { // #111
+		if (root == null) {
+			return 0;
+		}
+		if (root.left == null && root.right == null) {
+			return 1;
+		}
+		int minDepth = Integer.MAX_VALUE;
+		if (root.left != null) {
+			minDepth = Math.min(minDepth, minDepth(root.left));
+		}
+		if (root.right != null) {
+			minDepth = Math.min(minDepth, minDepth(root.right));
+		}
+		return minDepth + 1;
 	}
 
 	public boolean hasPathSum(TreeNode root, int sum) { // #112
