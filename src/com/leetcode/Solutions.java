@@ -1,6 +1,18 @@
 package com.leetcode;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+import java.util.Stack;
+
 
 public class Solutions {
 
@@ -1078,6 +1090,25 @@ public class Solutions {
 		}
 		return ans;
 	}
+
+	public int[][] merge(int[][] intervals) { // #56
+		if (intervals.length == 0) {
+            return intervals;
+        }
+		Arrays.parallelSort(intervals, (o1, o2) -> o1[0] - o2[0]);
+		List<int[]> ans = new ArrayList<>();
+		ans.add(intervals[0]);
+		for (int[] interval : intervals) {
+			int[] cur = ans.get(ans.size() - 1);
+			if (cur[1] < interval[0]) {
+				ans.add(interval);
+			} else {
+				cur[1] = cur[1] > interval[1] ? cur[1] : interval[1];
+			}
+		}
+		int[][] arr = new int[ans.size()][2];
+		return ans.toArray(arr);
+	}
 	
 	public int lengthOfLastWord(String s) { // #58
 		int length = 0;
@@ -1968,7 +1999,23 @@ public class Solutions {
 		}
 		return rooms;
 	}
-
+	public int firstBadVersion(int n) { // #278
+		long first = 1;
+		long last = ((long) n) + 1;
+		while (true) {
+			int mid = (int) (first + (last - first) / 2);
+			if (!isBadVersion(mid - 1) && isBadVersion(mid)) {
+				return mid;
+			} else if (isBadVersion(mid)) {
+				last = mid;
+			} else {
+				first = mid + 1;
+			}
+		}
+	}
+	boolean isBadVersion(int version) {
+		return version >= 4;
+	}
 	public void moveZeroes(int nums[]) { // #283
 		for (int i = 0, cur = 0; i < nums.length; i++) {
 			if (nums[i] == 0) {
@@ -2068,6 +2115,44 @@ public class Solutions {
 		}
 		return num == 0;
 	}
+	
+//	public boolean canConstruct(String ransomNote, String magazine) { // #383
+//		char[] r = ransomNote.toCharArray();
+//		char[] m = magazine.toCharArray();
+//		Arrays.parallelSort(r);
+//		Arrays.parallelSort(m);
+//		int rLen = r.length;
+//		int mLen = m.length;
+//		int rIndex = 0;
+//		int mIndex = 0;
+//		while (rIndex < rLen && mIndex < mLen) {
+//			if (r[rIndex] == m[mIndex]) {
+//				rIndex++;
+//				mIndex++;
+//			} else if (r[rIndex] > m[mIndex]) {
+//				mIndex++;
+//			} else {
+//				return false;
+//			}
+//		}
+//		return rIndex == rLen;
+//	}
+	
+	public boolean canConstruct(String ransomNote, String magazine) {
+		int[] notes = new int[26];
+		for (int i = 0; i < ransomNote.length(); i++) {
+			notes[ransomNote.charAt(i) - 'a']++;
+		}
+		for (int j = 0; j < magazine.length(); j++) {
+			notes[magazine.charAt(j) - 'a']--;
+		}
+		for (int i = 0; i < 26; i++) {
+			if (notes[i] > 0) {
+				return false;
+			}
+		}
+		return true;
+	}
 
 	public boolean isSubtree(TreeNode s, TreeNode t) { // #572
 		return serialize(s, new StringBuilder()).contains(serialize(t, new StringBuilder()));
@@ -2125,6 +2210,20 @@ public class Solutions {
 			}
 		}
 		return values;
+	}
+	
+	public int numJewelsInStones(String J, String S) { // #771
+		int[] jewels = new int[256];
+		int ans = 0;
+		for (int j = 0; j < J.length(); j++) {
+			jewels[J.charAt(j)]++;
+		}
+		for (int s = 0; s < S.length(); s++) {
+			if (jewels[S.charAt(s)] > 0) {
+				ans++;
+			}
+		}
+		return ans;
 	}
 
 	public int longestCommonSubsequence(String text1, String text2) { // #1143

@@ -656,6 +656,32 @@ public class TestSolutions {
 		assertThat(solutions.longestValidParentheses("(()"), is(2));
 		assertThat(solutions.longestValidParentheses(")()())"), is(4));
 	}
+	@Test
+	public void testFirstBadVersion() {
+		assertThat(solutions.firstBadVersion(5), is(4));
+	}
+	@Test
+	public void testNumJewelsInStones() {
+		assertThat(solutions.numJewelsInStones("aA", "aAAbbbb"), is(3));
+		assertThat(solutions.numJewelsInStones("z", "ZZ"), is(0));
+	}
+	@Test
+	public void testCanConstruct() {
+		assertFalse(solutions.canConstruct("a", "b"));
+		assertFalse(solutions.canConstruct("aa", "ab"));
+		assertTrue(solutions.canConstruct("aa", "aab"));
+	}
+	@Test
+	public void testMergeIntervals() {
+		int[][] intervals = {{1,3},{2,6},{8,10},{15,18}};
+		int[][] output = {{1,6},{8,10},{15,18}};
+		assertThat(solutions.merge(intervals), is(output));
+		intervals = new int[][] {{1,4},{4,5}};
+		output = new int[][] {{1,5}};
+		assertThat(solutions.merge(intervals), is(output));
+		intervals = new int[][] {};
+		assertThat(solutions.merge(intervals), is(intervals));
+	}
 
 	@Test
 	public void testIsSymmetric() {
