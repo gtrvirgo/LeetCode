@@ -599,6 +599,33 @@ public class Solutions {
 			helper(left, right - 1, solutions, solution);
 		}
 	}
+	
+	public ListNode mergeKLists(ListNode[] lists) { // #23
+		if (lists.length == 0) {
+			return null;
+		}
+		if (lists.length == 1) {
+			return lists[0];
+		}
+		List<ListNode> list = Arrays.asList(lists);
+		List<ListNode> cur = list;
+		while (cur.size() > 1) {
+			List<ListNode> tmp = new ArrayList<>();
+			int i = 0;
+			int j = cur.size() - 1;
+			while (i <= j) {
+				if (i == j) {
+					tmp.add(cur.get(i));
+				} else {
+					tmp.add(mergeTwoLists(cur.get(i), cur.get(j)));
+				}
+				i++;
+				j--;
+			}
+			cur = tmp;
+		}
+		return cur.get(0);
+	}
 
 	public int removeDuplicates(int[] nums) { // #26
 		int i = 0;
@@ -1141,7 +1168,7 @@ public class Solutions {
 			if (cur[1] < interval[0]) {
 				ans.add(interval);
 			} else {
-				cur[1] = cur[1] > interval[1] ? cur[1] : interval[1];
+				cur[1] = Math.max(cur[1], interval[1]);
 			}
 		}
 		int[][] arr = new int[ans.size()][2];

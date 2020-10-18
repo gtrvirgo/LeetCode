@@ -843,4 +843,14 @@ public class TestSolutions {
 					array2ListNode(nums2[i]))), is(expecteds[i]));
 		}
 	}
+	@Test
+	public void testMergerKLists() {
+		ListNode[] lists = new ListNode[] {
+				array2ListNode(new int[] {1,4,5}),
+				array2ListNode(new int[] {1,3,4}),
+				array2ListNode(new int[] {2,6})
+		};
+		Integer[] expecteds = new Integer[] {1,1,2,3,4,4,5,6};
+		assertThat(listNode2Array(solutions.mergeKLists(lists)), is(expecteds));
+	}
 }
