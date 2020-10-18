@@ -1090,6 +1090,19 @@ public class Solutions {
 		}
 		return ans;
 	}
+	
+	public boolean canJump(int[] nums) { // #55
+		int farest = 0;
+		for (int i = 0; i < nums.length; i++) {
+			if (i <= farest) {
+				farest = Math.max(farest, i + nums[i]);
+			}
+			if (farest >= nums.length - 1) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	public int[][] merge(int[][] intervals) { // #56
 		if (intervals.length == 0) {

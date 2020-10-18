@@ -792,4 +792,9 @@ public class TestSolutions {
 		assertTrue(solutions.isRegExpMatch("aab", "c*a*b"));
 		assertFalse(solutions.isRegExpMatch("mississippi", "mis*is*p*."));
 	}
+	@Test
+	public void testCanJump() {
+		assertTrue(solutions.canJump(new int[] {2,3,1,1,4}));
+		assertFalse(solutions.canJump(new int[] {3,2,1,0,4}));
+	}
 }
