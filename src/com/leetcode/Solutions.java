@@ -1079,19 +1079,6 @@ public class Solutions {
 		return ans;
 	}
 	
-	public boolean canJump(int[] nums) { // #55
-		int farest = 0;
-		for (int i = 0; i < nums.length; i++) {
-			if (i <= farest) {
-				farest = Math.max(farest, i + nums[i]);
-			}
-			if (farest >= nums.length - 1) {
-				return true;
-			}
-		}
-		return false;
-	}
-
 	public int lengthOfLastWord(String s) { // #58
 		int length = 0;
 		if (s.length() > 0) {

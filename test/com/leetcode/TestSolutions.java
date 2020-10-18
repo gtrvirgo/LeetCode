@@ -658,16 +658,6 @@ public class TestSolutions {
 	}
 
 	@Test
-	public void testCanJump() {
-		int[] nums = { 2, 3, 1, 1, 4 };
-		assertTrue(solutions.canJump(nums));
-		nums = new int[] { 3, 2, 1, 0, 4 };
-		assertFalse(solutions.canJump(nums));
-		nums = new int[] { 0 };
-		assertTrue(solutions.canJump(nums));
-	}
-
-	@Test
 	public void testIsSymmetric() {
 		Integer[] nums = { 1, 2, 2, 3, 4, 4, 3 };
 		TreeNode root = Utils.createBinaryTree(nums);
