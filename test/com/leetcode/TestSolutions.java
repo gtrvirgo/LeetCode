@@ -31,31 +31,31 @@ public class TestSolutions {
 	}
 
 	@Test
-	public void TestIsPalindrome() {
+	public void testIsPalindrome4String() {
 		String s = "race a car";
 		assertFalse(solutions.isPalindrome(s));
 	}
 
 	@Test
-	public void TestConvert() {
+	public void testConvert() {
 		assertThat(solutions.convert("PAYPALISHIRING", 3), is("PAHNAPLSIIGYIR"));
 		assertThat(solutions.convert("PAYPALISHIRING", 4), is("PINALSIGYAHRPI"));
 	}
 
 	@Test
-	public void TestSingleNumber() {
+	public void testSingleNumber() {
 		int[] nums = { 4, 1, 2, 1, 2 };
 		assertThat(4, is(solutions.singleNumber(nums)));
 	}
 
 	@Test
-	public void TestRemoveDuplicates() {
+	public void testRemoveDuplicates() {
 		int[] nums = { 0, 0, 1, 1, 1, 2, 2, 3, 3, 4 };
 		assertThat(5, is(solutions.removeDuplicates(nums)));
 	}
 
 	@Test
-	public void TestIsValid() {
+	public void testIsValid() {
 		String s = "()";
 		assertTrue(solutions.isValid(s));
 		s = "()[]{}";
@@ -69,7 +69,7 @@ public class TestSolutions {
 	}
 
 	@Test
-	public void TestFindSubString() {
+	public void testFindSubString() {
 		String s = "wordgoodgoodgoodbestword";
 		String[] words = { "word", "good", "best", "good" };
 		assertThat(new Object[] { 8 }, equalTo(solutions.findSubstring(s, words).toArray()));
@@ -83,7 +83,7 @@ public class TestSolutions {
 	}
 
 	@Test
-	public void TestMoveZeroes() {
+	public void testMoveZeroes() {
 		int nums[] = { 0, 1, 0, 3, 12 };
 		solutions.moveZeroes(nums);
 		assertThat(new int[] { 1, 3, 12, 0, 0 }, equalTo(nums));
@@ -93,7 +93,7 @@ public class TestSolutions {
 	}
 
 	@Test
-	public void TestRemoveDuplicatesII() {
+	public void testRemoveDuplicatesII() {
 		int nums[] = { 0, 0, 1, 1, 1, 1, 2, 3, 3 };
 		int len = solutions.removeDuplicatesII(nums);
 		int[] actuals = Arrays.copyOf(nums, len);
@@ -796,5 +796,51 @@ public class TestSolutions {
 	public void testCanJump() {
 		assertTrue(solutions.canJump(new int[] {2,3,1,1,4}));
 		assertFalse(solutions.canJump(new int[] {3,2,1,0,4}));
+	}
+	
+	ListNode array2ListNode(int[] nums) {
+		ListNode dummyHead = new ListNode(0);
+		ListNode cur = dummyHead;
+		for (int i = 0; i < nums.length; i++) {
+			cur.next = new ListNode(nums[i]);
+			cur = cur.next;
+		}
+		return dummyHead.next;
+	}
+	Integer[] listNode2Array(ListNode head) {
+		List<Integer> res = new ArrayList<>();
+		ListNode cur = head;
+		while (cur != null) {
+			res.add(cur.val);
+			cur = cur.next;
+		}
+		Integer[] output = new Integer[res.size()];
+		return res.toArray(output);
+	}
+	@Test
+	public void testMergeTwoLists() {
+		Integer[][] expecteds = new Integer[][] {
+			{1,1,2,3,4,4},
+			{},
+			{0},
+			{-9,3,5,7}
+		};
+		int[][] nums1 = new int[][] {
+			{1, 2, 4},
+			{},
+			{},
+			{-9,3}
+		};
+		int[][] nums2 = new int[][] {
+			{1, 3, 4},
+			{},
+			{0},
+			{5,7}
+		};
+		for (int i = 0; i < expecteds.length; i++) {
+			assertThat(listNode2Array(solutions.mergeTwoLists(
+					array2ListNode(nums1[i]),
+					array2ListNode(nums2[i]))), is(expecteds[i]));
+		}
 	}
 }

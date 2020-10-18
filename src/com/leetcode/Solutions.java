@@ -3,7 +3,6 @@ package com.leetcode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -550,6 +549,32 @@ public class Solutions {
 			}
 		}
 		return stack.isEmpty();
+	}
+	
+	public ListNode mergeTwoLists(ListNode l1, ListNode l2) { // #21
+		ListNode dummyHead = new ListNode(0);
+		ListNode cur = dummyHead;
+		while (l1 != null && l2 != null) {
+			if (l1.val < l2.val) {
+				cur.next = l1;
+				l1 = l1.next;
+			} else {
+				cur.next = l2;
+				l2 = l2.next;
+			}
+			cur = cur.next;
+		}
+		while (l1 != null) {
+			cur.next = l1;
+			l1 = l1.next;
+			cur = cur.next;
+		}
+		while (l2 != null) {
+			cur.next = l2;
+			l2 = l2.next;
+			cur = cur.next;
+		}
+		return dummyHead.next;
 	}
 
 	public List<String> generateParenthesis(int n) { // #22
@@ -2292,6 +2317,8 @@ public class Solutions {
 		ListNode(int val) {
 			this.val = val;
 		}
+		
+		ListNode(int val, ListNode next) { this.val = val; this.next = next; }
 	}
 
 	static class TreeNode {
