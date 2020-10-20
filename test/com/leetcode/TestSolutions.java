@@ -819,19 +819,19 @@ public class TestSolutions {
 	}
 	@Test
 	public void testMergeTwoLists() {
-		Integer[][] expecteds = new Integer[][] {
+		Integer[][] expecteds = {
 			{1,1,2,3,4,4},
 			{},
 			{0},
 			{-9,3,5,7}
 		};
-		int[][] nums1 = new int[][] {
+		int[][] nums1 = {
 			{1, 2, 4},
 			{},
 			{},
 			{-9,3}
 		};
-		int[][] nums2 = new int[][] {
+		int[][] nums2 = {
 			{1, 3, 4},
 			{},
 			{0},
@@ -850,7 +850,21 @@ public class TestSolutions {
 				array2ListNode(new int[] {1,3,4}),
 				array2ListNode(new int[] {2,6})
 		};
-		Integer[] expecteds = new Integer[] {1,1,2,3,4,4,5,6};
+		Integer[] expecteds = {1,1,2,3,4,4,5,6};
 		assertThat(listNode2Array(solutions.mergeKLists(lists)), is(expecteds));
+	}
+	@Test
+	public void testProductExceptSelf() {
+		int[][] nums = {
+				{1,2,3,4},
+				{0,1}
+		};
+		int[][] outputs = {
+				{24,12,8,6},
+				{1,0}
+		};
+		for (int i = 0; i < nums.length; i++) {
+			assertThat(solutions.productExceptSelf(nums[i]), is(outputs[i]));
+		}
 	}
 }

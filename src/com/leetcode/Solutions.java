@@ -1973,6 +1973,20 @@ public class Solutions {
 		}
 		return left == null ? right : left;
 	}
+	
+	public int[] productExceptSelf(int[] nums) { // #238
+		int[] ans = new int[nums.length];
+		ans[0] = 1;
+		for (int i = 1; i < nums.length; i++) {
+			ans[i] = ans[i - 1] * nums[i - 1];
+		}
+		int right = 1;
+		for (int i = nums.length - 1; i >= 0; i--) {
+			ans[i] *= right;
+			right *= nums[i];
+		}
+		return ans;
+	}
 
 	public int[] maxSlidingWindow(int[] nums, int k) { // #239
 		if (nums.length == 0 || k < 1) {
