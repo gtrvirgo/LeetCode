@@ -7,6 +7,9 @@ import com.leetcode.Solutions.TreeNode;
 
 public class Utils {
 	public static TreeNode createBinaryTree(Integer[] nums) {
+		if (nums == null || nums.length == 0) {
+			return null;
+		}
 		TreeNode root = new TreeNode(nums[0]);
 		Queue<TreeNode> queue = new LinkedList<>();
 		queue.offer(root);

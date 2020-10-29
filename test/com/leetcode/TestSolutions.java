@@ -13,11 +13,15 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.leetcode.Solutions.Codec;
 import com.leetcode.Solutions.ListNode;
 import com.leetcode.Solutions.TreeNode;
 
@@ -865,6 +869,170 @@ public class TestSolutions {
 		};
 		for (int i = 0; i < nums.length; i++) {
 			assertThat(solutions.productExceptSelf(nums[i]), is(outputs[i]));
+		}
+	}
+	@Test
+	public void testTopKFrequent() {
+		int[][] nums = {
+				{1,1,1,2,2,3},
+				{1}
+		};
+		int[] k = {2, 1};
+		Integer[][] expecteds = {
+				{1,2},
+				{1}
+		};
+		for (int i = 0; i < k.length; i++) {
+			Set<Integer> expected = new HashSet<>(Arrays.asList(expecteds[i]));
+			assertThat(IntStream.of(solutions.topKFrequent(nums[i], k[i])).boxed().collect(Collectors.toSet()), is(expected));
+		}
+	}
+	@Test
+	public void testSearch() {
+		int[][] nums = {
+				{4, 5, 6, 7, 0, 1, 2},
+				{4, 5, 6, 7, 0, 1, 2},
+				{1},
+				{3, 1}
+		};
+		int[] targets = {0, 3, 0, 3};
+		int[] expecteds = {4, -1, -1, 0};
+		for (int i = 0; i < nums.length; i++) {
+			assertThat(solutions.search(nums[i], targets[i]), is(expecteds[i]));
+		}
+	}
+	@Test
+	public void testFindMin() {
+		int[][] nums = {
+				{3,4,5,1,2},
+				{4,5,6,7,0,1,2}
+		};
+		int[] expecteds = {1, 0};
+		for (int i = 0; i < nums.length; i++) {
+			assertThat(solutions.findMin(nums[i]), is(expecteds[i]));
+		}
+	}
+	@Test
+	public void testRob() {
+		int[][] nums = {
+				{1,2,3,1},
+				{2,7,9,3,1},
+				{1, 3, 4, 3, 0, 2, 7}
+		};
+		int[] expecteds = {4, 12, 13};
+		for (int i = 0; i < expecteds.length; i++) {
+			assertThat(solutions.rob(nums[i]), is(expecteds[i]));
+		}
+	}
+	@Test
+	public void testCodec() {
+		Integer[][] inputs = {
+				{1,2,3,null,null,4,5},
+				{},
+				{1},
+				{1,2}
+		};
+		TreeNode root;
+		String data;
+		Codec codec = new Solutions.Codec();
+		for (int i = 0; i < inputs.length; i++) {
+			root = Utils.createBinaryTree(inputs[i]);
+			data = codec.serialize(root);
+			assertTrue(solutions.isSameTree(root, codec.deserialize(data)));
+		}
+	}
+	@Test
+	public void testPreorderTraversal() {
+		Integer[][] inputs = {
+				{1,null,2,3},
+				{},
+				{1},
+				{1,null,2},
+				{1,2}
+		};
+		Integer[][] expecteds = {
+				{1,2,3},
+				{},
+				{1},
+				{1,2},
+				{1,2}
+		};
+		for (int i = 0; i < expecteds.length; i++) {
+			assertThat(solutions.preorderTraversal(Utils.createBinaryTree(inputs[i])),
+					is(Arrays.asList(expecteds[i])));
+		}
+	}
+	@Test
+	public void testInorderTraversal() {
+		Integer[][] inputs = {
+				{1,null,2,3},
+				{},
+				{1},
+				{1,2},
+				{1,null,2}
+		};
+		Integer[][] expecteds = {
+				{1,3,2},
+				{},
+				{1},
+				{2,1},
+				{1,2}
+		};
+		for (int i = 0; i < expecteds.length; i++) {
+			assertThat(solutions.inorderTraversal(Utils.createBinaryTree(inputs[i])),
+					is(Arrays.asList(expecteds[i])));
+		}
+	}
+	@Test
+	public void testMinWindow() {
+		String[] s = {
+				"ADOBECODEBANC",
+				"cabwefgewcwaefgcf",
+				"a"
+		};
+		String[] t = {
+				"ABC",
+				"cae",
+				"a"
+		};
+		String[] expected = {
+				"BANC",
+				"cwae",
+				"a"
+		};
+		for (int i = 0; i < expected.length; i++) {
+			assertThat(solutions.minWindow(s[i], t[i]), is(expected[i]));
+		}
+	}
+	@Test
+	public void testCoinChange() {
+		int[][] coins = {
+				{1,2,5},
+				{2},
+				{1},
+				{1},
+				{1}
+		};
+		int[] amounts = {11,3,0,1,2};
+		int[] expecteds = {3,-1,0,1,2};
+		for (int i = 0; i < coins.length; i++) {
+			assertThat(solutions.coinChange(coins[i], amounts[i]), is(expecteds[i]));
+		}
+	}
+	@Test
+	public void testFindMinArrowShots() {
+		int[][][] points = {
+				{{10,16},{2,8},{1,6},{7,12}},
+				{{1,2},{3,4},{5,6},{7,8}},
+				{{1,2},{2,3},{3,4},{4,5}},
+				{{1,2}},
+				{{2,3},{2,3}},
+				{{-2147483648,2147483647}},
+				{{-2147483646,-2147483645},{2147483646,2147483647}}
+		};
+		int[] expecteds = {2,4,2,1,1,1,2};
+		for (int i = 0; i < points.length; i++) {
+			assertThat(solutions.findMinArrowShots(points[i]), is(expecteds[i]));
 		}
 	}
 }

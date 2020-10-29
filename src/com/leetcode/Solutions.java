@@ -766,6 +766,41 @@ public class Solutions {
 		}
 		return len;
 	}
+	
+	public int search(int[] nums, int target) { // #33
+		int n = nums.length;
+		if (n == 0) {
+			return -1;
+		}
+		if (n == 1) {
+			return nums[0] == target ? 0 : -1;
+		}
+		int l = 0;
+		int r = n - 1;
+		while (l < r) {
+			int mid = (l + r) / 2;
+			if (nums[mid] > nums[r]) {
+				l = mid + 1;
+			} else {
+				r = mid;
+			}
+		}
+		int pivot = l;
+		l = 0;
+		r = n;
+		while (l < r) {
+			int mid = (l + r) / 2;
+			int realMid = (mid + pivot) % n;
+			if (nums[realMid] > target) {
+				r = mid;
+			} else if (nums[realMid] < target) {
+				l = mid + 1;
+			} else {
+				return realMid;
+			}
+		}
+		return -1;
+	}
 
 	public int searchInsert(int[] nums, int target) { // #35
 		int left = 0;
@@ -1299,6 +1334,44 @@ public class Solutions {
 			}
 		}
 	}
+	
+	public String minWindow(String s, String t) { // #76
+		if (s.length() < t.length()) {
+			return "";
+		}
+		int[] window = new int[128];
+		int[] need = new int[128];
+		char[] ss = s.toCharArray();
+		char[] tt = t.toCharArray();
+		int matches = 0;
+		int min = ss.length;
+		String ans = "";
+		for (int i = 0; i < tt.length; i++) {
+			need[tt[i]]++;
+		}
+		int l = 0;
+		int r = 0;
+		while (r < ss.length) {
+			char c = ss[r];
+			window[c]++;
+			if (window[c] <= need[c]) {
+				matches++;
+			}
+			while (matches == tt.length && l <= r) {
+				if (r - l + 1 <= min) {
+					ans = s.substring(l, r + 1);
+					min = r - l + 1;
+				}
+				window[ss[l]]--;
+				if (window[ss[l]] < need[ss[l]]) {
+					matches--;
+				}
+				l++;
+			}
+			r++;
+		}
+		return ans;
+	}
 
 	public int removeDuplicatesII(int nums[]) { // #80
 		if (nums.length == 0) {
@@ -1352,6 +1425,25 @@ public class Solutions {
 				nums1[cur--] = nums2[j--];
 			}
 		}
+	}
+	
+	public List<Integer> inorderTraversal(TreeNode root) { // #94
+		List<Integer> ans = new ArrayList<>();
+		if (root == null) {
+			return ans;
+		}
+		Stack<TreeNode> stack = new Stack<>();
+		TreeNode node = root;
+		while (!stack.isEmpty() || node != null) {
+			while (node!= null) {
+				stack.push(node);
+				node = node.left;
+			}
+			node = stack.pop();
+			ans.add(node.val);
+			node = node.right;
+		}
+		return ans;
 	}
 
 	TreeNode prev;
@@ -1746,6 +1838,25 @@ public class Solutions {
 		}
 		return once;
 	}
+	
+	public List<Integer> preorderTraversal(TreeNode root) { // #144
+		List<Integer> ans = new ArrayList<>();
+		if (root == null) {
+			return ans;
+		}
+		Stack<TreeNode> stack = new Stack<>();
+		TreeNode node = root;
+		while (!stack.isEmpty() || node != null) {
+			while (node != null) {
+				ans.add(node.val);
+				stack.push(node);
+				node = node.left;
+			}
+			node = stack.pop();
+			node = node.right;
+		}
+		return ans;
+	}
 
 	public static class LRUCache { // #146
 		int capacity;
@@ -1856,6 +1967,24 @@ public class Solutions {
 			r--;
 		}
 	}
+	
+	public int findMin(int[] nums) { // #153
+		int n = nums.length;
+		if (n == 1) {
+			return nums[0];
+		}
+		int l = 0;
+		int r = n - 1;
+		while (l < r) {
+			int mid = (l + r) / 2;
+			if (nums[mid] > nums[r]) {
+				l = mid + 1;
+			} else {
+				r = mid;
+			}
+		}
+		return nums[l];
+	}
 
 	static class MinStack { // #155
 		Stack<Integer> regular;
@@ -1900,6 +2029,32 @@ public class Solutions {
 			curB = curB == null ? headA : curB.next;
 		}
 		return curA;
+	}
+	
+	public int rob(int[] nums) { // #198
+		int n = nums.length;
+		if (n == 0) {
+			return 0;
+		}
+		if (n == 1) {
+			return nums[0];
+		}
+//		int[] profits = new int[n];
+//		profits[0] = nums[0];
+//		profits[1] = Math.max(nums[0], nums[1]);
+//		for (int i = 2; i < n; i++) {
+//			profits[i] = Math.max(profits[i - 1], profits[i - 2] + nums[i]);
+//		}
+//		return profits[n - 1];
+		int first = nums[0];
+		int second = Math.max(nums[0], nums[1]);
+		int tmp = second;
+		for (int i = 2; i < nums.length; i++) {
+			second = Math.max(first + nums[i], second);
+			first = tmp;
+			tmp = second;
+		}
+		return second;
 	}
 
 	public ListNode removeElements(ListNode head, int val) { // #203
@@ -2107,7 +2262,67 @@ public class Solutions {
 			cur++;
 		}
 	}
+	
+	static class Codec { // #297
 
+	    // Encodes a tree to a single string.
+//	    public String serialize(TreeNode root) {
+//	    	StringBuilder sb = new StringBuilder();
+//	        preOrder(sb, root);
+//	        return sb.toString().substring(0, sb.lastIndexOf(","));
+//	    }
+		public String serialize(TreeNode root) {
+			StringBuilder sb = new StringBuilder();
+			Stack<TreeNode> stack = new Stack<>();
+			TreeNode node = root;
+			while (!stack.isEmpty() || node != null) {
+				while (node != null) {
+					sb.append(node.val + ",");
+					stack.push(node);
+					node = node.left;
+				}
+				sb.append("null,");
+				node = stack.pop();
+				node = node.right;
+			}
+			return sb.length() > 0 ? sb.toString().substring(0, sb.lastIndexOf(",")) : sb.toString();
+		}
+
+	    // Decodes your encoded data to tree.
+	    public TreeNode deserialize(String data) {
+	    	if ("".equals(data)) {
+	    		return null;
+	    	}
+	    	LinkedList<String> queue = new LinkedList(Arrays.asList(data.split(",")));
+	        return deserialize(queue);
+	    }
+	    
+	    void serialize(StringBuilder sb, TreeNode root) {
+			if (root == null) {
+				sb.append("null,");
+				return;
+			}
+			sb.append(root.val + ",");
+			serialize(sb, root.left);
+			serialize(sb, root.right);
+		}
+	    
+	    TreeNode deserialize(LinkedList<String> queue) {
+			if (queue.isEmpty()) {
+				return null;
+			}
+			if ("null".equals(queue.get(0))) {
+				queue.poll();
+				return null;
+			}
+			TreeNode root = new TreeNode(Integer.parseInt(queue.get(0)));
+			queue.poll();
+			root.left = deserialize(queue);
+			root.right = deserialize(queue);
+			return root;
+		}
+	}
+	
 	public int lengthOfLIS(int[] nums) { // #300
 		int[] dp = new int[nums.length];
 		int max = 0;
@@ -2125,21 +2340,17 @@ public class Solutions {
 
 	public int coinChange(int[] coins, int amount) { // #322
 		int[] dp = new int[amount + 1];
+		dp[0] = 0;
 		for (int i = 1; i <= amount; i++) {
-			int min = Integer.MAX_VALUE;
-			for (int coin : coins) {
-				if (i < coin) {
-					continue;
+			dp[i] = -1;
+		}
+		for (int i = 1; i <= amount; i++) {
+			for (int j = 0; j < coins.length; j++) {
+				if (coins[j] <= i && dp[i - coins[j]] != -1) {
+					if (dp[i] == -1 || dp[i] > dp[i - coins[j]] + 1) {
+						dp[i] = dp[i - coins[j]] + 1;
+					}
 				}
-				if (dp[i - coin] < 0 || dp[i - coin] >= min) {
-					continue;
-				}
-				min = dp[i - coin];
-			}
-			if (min == Integer.MAX_VALUE) {
-				dp[i] = -1;
-			} else {
-				dp[i] = min + 1;
 			}
 		}
 		return dp[amount];
@@ -2184,6 +2395,33 @@ public class Solutions {
 				r--;
 			}
 		}
+	}
+	
+	public int[] topKFrequent(int[] nums, int k) { // #347
+		Map<Integer, Integer> frequency = new HashMap<>();
+		for (int num : nums) {
+			frequency.put(num, frequency.getOrDefault(num, 0) + 1);
+		}
+		Map<Integer, List<Integer>> map = new HashMap<>();
+		for (Integer key : frequency.keySet()) {
+			List<Integer> keys = map.get(frequency.get(key));
+			if (keys == null) {
+				keys = new ArrayList<>();
+				map.put(frequency.get(key), keys);
+			}
+			keys.add(key);
+		}
+		Integer[] arr = map.keySet().stream().toArray(Integer[]::new);
+		Arrays.sort(arr, (a, b) -> b - a);
+		int[] ans = new int[k];
+		int index = 0;
+		for (int i = 0; i < arr.length; i++) {
+			List<Integer> keys = map.get(arr[i]);
+			for (int j = 0; j < keys.size() && index < k; j++) {
+				ans[index++] = keys.get(j);
+			}
+		}
+		return ans;
 	}
 
 	public boolean isPerfectSquare(int num) { // #367
@@ -2231,6 +2469,36 @@ public class Solutions {
 			}
 		}
 		return true;
+	}
+	
+	public int findMinArrowShots(int[][] points) { // #452
+		if (points == null || points.length == 0) {
+			return 0;
+		}
+		if (points.length == 1) {
+			return 1;
+		}
+		Arrays.sort(points, (o1, o2) -> {
+			long res = (long) o1[0] - (long) o2[0];
+			if (res < 0) {
+				return -1;
+			} else if (res > 0) {
+				return 1;
+			} else {
+				return 0;
+			}
+		});
+		int shots = 1;
+		int edge = points[0][1];
+		for (int i = 1; i < points.length; i++) {
+			if (points[i][0] > edge) {
+				shots++;
+				edge = points[i][1];
+			} else {
+				edge = Math.min(edge, points[i][1]);
+			}
+		}
+		return shots;
 	}
 
 	public boolean isSubtree(TreeNode s, TreeNode t) { // #572
