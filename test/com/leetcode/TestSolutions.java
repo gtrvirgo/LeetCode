@@ -11,16 +11,18 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.leetcode.Solutions.BSTIterator;
 import com.leetcode.Solutions.Codec;
 import com.leetcode.Solutions.ListNode;
 import com.leetcode.Solutions.TreeNode;
@@ -1033,6 +1035,64 @@ public class TestSolutions {
 		int[] expecteds = {2,4,2,1,1,1,2};
 		for (int i = 0; i < points.length; i++) {
 			assertThat(solutions.findMinArrowShots(points[i]), is(expecteds[i]));
+		}
+	}
+	@Test
+	public void testSumNumbers() {
+		Integer[][] nums = {
+				{1,2,3},
+				{4,9,0,5,1}
+		};
+		int[] expecteds = {25, 1026};
+		TreeNode root;
+		for (int i = 0; i < nums.length; i++) {
+			root = Utils.createBinaryTree(nums[i]);
+			assertThat(solutions.sumNumbers(root), is(expecteds[i]));
+		}
+	}
+	@Test
+	public void testCombine() {
+		int[][][] expecteds = {
+				{
+				  {2,4},
+				  {3,4},
+				  {2,3},
+				  {1,2},
+				  {1,3},
+				  {1,4},
+				},
+				{{1}}
+		};
+		int[] n = {4,1};
+		int[] k = {2,1};
+		for (int i = 0; i < n.length; i++) {
+			List<List<Integer>> expected = Stream.of(expecteds[i]).map(e -> IntStream.of(e).boxed().collect(Collectors.toList())).collect(Collectors.toList());
+			assertThat(new HashSet<List<Integer>>(solutions.combine(n[i], k[i])),
+					is(new HashSet<List<Integer>>(expected)));
+		}
+	}
+	@Test
+	public void testShortestWordDistanceII() {
+		String[] words = {"practice", "makes", "perfect", "coding", "makes"};
+		String[] word1 = {"coding", "makes"};
+		String[] word2 = {"practice", "coding"};
+		int[] expecteds = {3, 1};
+		for (int i = 0; i < word1.length; i++) {
+			assertThat(solutions.shortestWordDistanceII(words, word1[i], word2[i]), is(expecteds[i]));
+		}
+	}
+	@Test
+	public void testBSTIterator() {
+		Integer[] nums = {7,3,15,null,null,9,20};
+		TreeNode root = Utils.createBinaryTree(nums);
+		Iterator<Integer> expecteds = Arrays.asList(3,7,9,15,20).iterator();
+		BSTIterator iterator = new Solutions.BSTIterator(root);
+		while (true) {
+			assertThat(iterator.hasNext(), is(expecteds.hasNext()));
+			if (!iterator.hasNext()) {
+				break;
+			}
+			assertThat(iterator.next(), is(expecteds.next()));
 		}
 	}
 }

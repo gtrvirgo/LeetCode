@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Set;
 import java.util.Stack;
 
 
@@ -1372,6 +1373,27 @@ public class Solutions {
 		}
 		return ans;
 	}
+	
+	public List<List<Integer>> combine(int n, int k) { // #77
+		List<List<Integer>> ans = new ArrayList<>();
+		if (k <= 0 || n < k) {
+			return ans;
+		}
+		dfs(n, k, 1, new LinkedList<Integer>(), ans);
+		return ans;
+	}
+	
+	void dfs(int n, int depth, int cur, LinkedList<Integer> tmp, List<List<Integer>> ans) {
+		if (depth == 0) {
+			ans.add(new LinkedList<>(tmp));
+			return;
+		}
+		for (int i = cur; i <= n; i++) {
+			tmp.offerLast(i);
+			dfs(n, depth - 1, i + 1, tmp, ans);
+			tmp.pollLast();
+		}
+	}
 
 	public int removeDuplicatesII(int nums[]) { // #80
 		if (nums.length == 0) {
@@ -1820,6 +1842,20 @@ public class Solutions {
 		s = s.replaceAll("\\W", "");
 		return s.equalsIgnoreCase(new StringBuilder(s).reverse().toString());
 	}
+	
+	public int sumNumbers(TreeNode root) { // #129
+		return helper(root, 0);
+	}
+	int helper(TreeNode root, int val) {
+		if (root == null) {
+			return 0;
+		}
+		val = val * 10 + root.val;
+		if (root.left == null && root.right == null) {
+			return val;
+		}
+		return helper(root.left, val) + helper(root.right, val);
+	}
 
 	public int singleNumber(int[] nums) { // #136
 		int result = 0;
@@ -2031,6 +2067,38 @@ public class Solutions {
 		return curA;
 	}
 	
+	static class BSTIterator { // #173
+		
+		Stack<TreeNode> stack;
+
+	    public BSTIterator(TreeNode root) {
+	    	stack = new Stack<>();
+	    	TreeNode node = root;
+	    	findSmallest(node);
+	    }
+	    
+	    /** @return the next smallest number */
+	    public int next() {
+	    	TreeNode node = stack.pop();
+	    	int val = node.val;
+	    	node = node.right;
+	    	findSmallest(node);
+	    	return val;
+	    }
+	    
+	    /** @return whether we have a next smallest number */
+	    public boolean hasNext() {
+	    	return !stack.isEmpty();
+	    }
+	    
+	    void findSmallest(TreeNode node) {
+	    	while (node != null) {
+	    		stack.push(node);
+	    		node = node.left;
+	    	}
+	    }
+	}
+	
 	public int rob(int[] nums) { // #198
 		int n = nums.length;
 		if (n == 0) {
@@ -2117,7 +2185,7 @@ public class Solutions {
 		return newHead;
 	}
 
-	public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+	public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) { // #236
 		if (root == null || p == root || q == root) {
 			return root;
 		}
@@ -2179,6 +2247,33 @@ public class Solutions {
 			}
 		}
 		return true;
+	}
+	
+	public int shortestWordDistanceII(String[] words, String word1, String word2) { // #244
+		Map<String, List<Integer>> map = new HashMap<>();
+		for (int i = 0; i < words.length; i++) {
+			if (map.get(words[i]) == null) {
+				map.put(words[i], new ArrayList<>());
+			}
+			map.get(words[i]).add(i);
+		}
+		List<Integer> indexes1 = map.get(word1);
+		List<Integer> indexes2 = map.get(word2);
+		int i = 0;
+		int j = 0;
+		int min = words.length;
+		while (i < indexes1.size() && j < indexes2.size()) {
+			int pos1 = indexes1.get(i);
+			int pos2 = indexes2.get(j);
+			if (pos1 < pos2) {
+				min = Math.min(min, pos2 - pos1);
+				i++;
+			} else {
+				min = Math.min(min, pos1 - pos2);
+				j++;
+			}
+		}
+		return min;
 	}
 
 	public boolean canAttendMeetings(int[][] intervals) { // #252
