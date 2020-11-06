@@ -1,17 +1,6 @@
 package com.leetcode;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
-import java.util.Set;
-import java.util.Stack;
+import java.util.*;
 
 
 public class Solutions {
@@ -2098,6 +2087,25 @@ public class Solutions {
 	    	}
 	    }
 	}
+
+	public List<String> findRepeatedDnaSequences(String s) { // #187
+		Map<String, Integer> dna = new HashMap<>();
+		List<String> ans = new ArrayList<>();
+		int beginIndex = 0;
+		int endIndex = 10;
+		while (endIndex <= s.length()) {
+			String sequence = s.substring(beginIndex, endIndex);
+			dna.put(sequence, dna.getOrDefault(sequence, 0) + 1);
+			beginIndex++;
+			endIndex++;
+		}
+		dna.forEach((k, v) -> {
+			if (v > 1) {
+				ans.add(k);
+			}
+		});
+		return ans;
+	}
 	
 	public int rob(int[] nums) { // #198
 		int n = nums.length;
@@ -2123,6 +2131,31 @@ public class Solutions {
 			tmp = second;
 		}
 		return second;
+	}
+
+	public List<Integer> rightSideView(TreeNode root) { // #199
+		List<Integer> ans = new ArrayList<>();
+		if (root == null) {
+			return ans;
+		}
+		Queue<TreeNode> queue = new LinkedList<>();
+		queue.offer(root);
+		int count = 1;
+		while (!queue.isEmpty()) {
+			count--;
+			TreeNode node = queue.poll();
+			if (node.left != null) {
+				queue.offer(node.left);
+			}
+			if (node.right != null) {
+				queue.offer(node.right);
+			}
+			if (count == 0) {
+				ans.add(node.val);
+				count = queue.size();
+			}
+		}
+		return ans;
 	}
 
 	public ListNode removeElements(ListNode head, int val) { // #203
@@ -2328,6 +2361,9 @@ public class Solutions {
 		}
 		return rooms;
 	}
+	boolean isBadVersion(int version) {
+		return version >= 4;
+	}
 	public int firstBadVersion(int n) { // #278
 		long first = 1;
 		long last = ((long) n) + 1;
@@ -2342,8 +2378,13 @@ public class Solutions {
 			}
 		}
 	}
-	boolean isBadVersion(int version) {
-		return version >= 4;
+	public void wiggleSort(int[] nums) { // #280
+		Arrays.sort(nums);
+		for (int i = 1; i < nums.length - 1; i += 2) {
+			int tmp = nums[i];
+			nums[i] = nums[i + 1];
+			nums[i + 1] = tmp;
+		}
 	}
 	public void moveZeroes(int nums[]) { // #283
 		for (int i = 0, cur = 0; i < nums.length; i++) {
@@ -2683,6 +2724,38 @@ public class Solutions {
 			}
 		}
 		return dp[text2.length()];
+	}
+
+	public int countOrders(int n) { // #1359
+		long ans = 1;
+		int modulo = (int) (Math.pow(10, 9) + 7);
+		for (int i = 1; i <= n; i++) {
+			ans *= i;
+			ans %= modulo;
+			ans *= 2 * i - 1;
+			ans %= modulo;
+		}
+		return (int) ans;
+	}
+
+	static class Solution {
+
+		int res = 0;
+
+		public int longestZigZag(TreeNode root) { // #1372
+			helper(root);
+			return res;
+		}
+
+		int[] helper(TreeNode root) {
+			if (root == null) {
+				return new int[]{-1, -1};
+			}
+			int[] left = helper(root.left);
+			int[] right = helper(root.right);
+			res = Math.max(res, Math.max(left[1] + 1, right[0] + 1));
+			return new int[] {left[1] + 1, right[0] + 1};
+		}
 	}
 
 	public boolean isPathCrossing(String path) { // #1496
