@@ -2361,6 +2361,14 @@ public class Solutions {
 		}
 		return rooms;
 	}
+
+	public int missingNumber(int[] nums) { // #268
+		int ans = 0;
+		for (int i = 0; i < nums.length; i++) {
+			ans ^= nums[i] ^ (i + 1);
+		}
+		return ans;
+	}
 	boolean isBadVersion(int version) {
 		return version >= 4;
 	}

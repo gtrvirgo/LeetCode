@@ -1172,4 +1172,17 @@ public class TestSolutions {
 		TreeNode root = Utils.createBinaryTree(nums);
 		assertThat(solutions.rightSideView(root), is(Arrays.asList(expected)));
 	}
+	@Test
+	public void testMissingNumber() {
+		int[][] nums = {
+			{3,0,1},
+			{0,1},
+			{9,6,4,2,3,5,7,0,1},
+			{0}
+		};
+		int[] expecteds = {2,2,8,1};
+		for (int i = 0; i < nums.length; i++) {
+			assertThat(solutions.missingNumber(nums[i]), is(expecteds[i]));
+		}
+	}
 }
